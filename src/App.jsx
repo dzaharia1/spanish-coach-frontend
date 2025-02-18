@@ -44,7 +44,10 @@ function App() {
       setIsLoading(true)
       setTranslation('') // Clear previous translation
       
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/translate`, {
+      const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/translate`;
+      console.log('Making request to:', apiUrl); // Add debugging
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,6 +55,12 @@ function App() {
         credentials: 'include',
         body: JSON.stringify({ text }),
       })
+
+      if (!response.ok) {
+        // Add error handling for non-200 responses
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
