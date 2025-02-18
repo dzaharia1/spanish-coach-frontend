@@ -6,18 +6,17 @@ import './App.css'
 
 const AppContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   height: 100vh;
   overflow: hidden;
+
+  @media (screen and (max-width: 768px)) {
+    flex-direction: column;
+  }
 `;
 
 const Header = styled.header`
-  position: sticky;
-  width: 100%;
-  top: 0;
-  background: var(--color-bg-light);
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 100;
 
   @media (prefers-color-scheme: dark) {
@@ -27,7 +26,7 @@ const Header = styled.header`
 
 const ContentArea = styled.main`
   flex: 1;
-  overflow-y: auto;
+  overflow: scroll;
   padding: 2rem;
 
   @media (prefers-color-scheme: dark) {
@@ -95,7 +94,7 @@ function App() {
   return (
     <AppContainer>
       <Header>
-        <PromptInput onSubmit={handleSubmit} />
+        <PromptInput onSubmit={handleSubmit} isLoading={isLoading} />
       </Header>
       <ContentArea>
         <TranslationResponse translation={translation} />

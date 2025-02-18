@@ -1,26 +1,37 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const StyledIconButton = styled.button`
-  padding: 8px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 4px;
-  background-color: #4a90e2;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  padding: 10px;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 15px;
+
+  background-color: #FCFCFD;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
   &:hover {
-    background-color: #357abd;
+    background-color: darken(rgba(0, 0, 0, .25), .25);
   }
 
   &:active {
-    background-color: #2b62a1;
+    background-color: darken(rgba(0, 0, 0, .25), .25);
   }
 
   &:disabled {
@@ -32,12 +43,7 @@ const StyledIconButton = styled.button`
 const IconButton = ({ icon, onClick, disabled, ...props }) => {
   return (
     <StyledIconButton onClick={onClick} disabled={disabled} {...props}>
-      <FontAwesomeIcon 
-        icon={icon}
-        size="lg"
-        fixedWidth
-        style={{ width: '1em', height: '1em' }}
-      />
+      <img src={`/${icon}.svg`} alt="Icon" />
     </StyledIconButton>
   );
 };
