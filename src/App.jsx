@@ -44,7 +44,7 @@ function App() {
       setIsLoading(true)
       setTranslation('') // Clear previous translation
       
-      const response = await fetch(import.meta.env.API_URL || 'http://localhost:3000/translate', {
+      const response = await fetch(`${import.meta.env.API_URL || 'http://localhost:3000'}/translate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
