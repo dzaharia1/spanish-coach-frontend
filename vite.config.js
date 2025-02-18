@@ -6,6 +6,7 @@ import process from 'process'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: process.env.VITE_PORT || 3000
+    port: process.env.VITE_PORT || 3000,
+    allowedHosts: ['spanish.danzaharia.com']
   }
 })
