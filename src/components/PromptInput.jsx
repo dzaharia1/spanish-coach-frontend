@@ -2,8 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import IconButton from './IconButton';
-import Button from './button';
-
+import Button from './Button';
 const StyledInput = styled.textarea`
   border: none;
   font-size: 1.5rem;
