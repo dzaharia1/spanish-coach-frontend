@@ -29,14 +29,28 @@ const InputWrapper = styled.div`
 
 const StyledInput = styled.textarea`
   border: none;
-  font-size: 1.5rem;
+  font-size: ${({ $inputLength }) => {
+    if ($inputLength < 50) return '1.5rem';
+    if ($inputLength < 75) return '1.25rem';
+    if ($inputLength < 200) return '1.125rem';
+    if ($inputLength < 300) return '1rem';
+    if ($inputLength < 400) return '0.875rem';
+    return '1rem';
+  }};
   padding: ${({ theme }) => theme.spacing.small};
   width: 100%;
   outline: none;
   resize: vertical;
-  min-height: 2.5rem;
+  min-height: ${({ $inputLength }) => {
+    if ($inputLength < 50) return '2.5rem';
+    if ($inputLength < 75) return '3rem';
+    if ($inputLength < 200) return '3.5rem';
+    if ($inputLength < 300) return '4rem';
+    return '4.5rem';
+  }};
   overflow: hidden;
   line-height: 1.5;
+  transition: font-size 0.2s ease;
 
   @media (prefers-color-scheme: light) {
     background-color: ${({ theme }) => theme.lightTheme.colors.inputBackground};
@@ -110,6 +124,7 @@ const PromptInput = ({ onSubmit, isLoading }) => {
     <InputWrapper>
       <StyledInput
         value={input}
+        $inputLength={input.length}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
         placeholder="Enter text to translate..."
