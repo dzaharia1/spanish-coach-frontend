@@ -4,35 +4,61 @@ import styled from 'styled-components';
 import IconButton from './IconButton';
 import Button from './Button';
 
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: ${({ theme }) => theme.spacing.medium};
+  padding: ${({ theme }) => theme.spacing.large};
+  border-radius: ${({ theme }) => theme.borderRadii.large};
+  width: 100%;
+
+  @media (prefers-color-scheme: light) {
+    background-color: ${({ theme }) => theme.lightTheme.colors.background};
+    color: ${({ theme }) => theme.lightTheme.colors.text};
+    box-shadow: 0 2px 4px ${({ theme }) => theme.lightTheme.colors.shadow};
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: ${({ theme }) => theme.darkTheme.colors.background};
+    color: ${({ theme }) => theme.darkTheme.colors.text};
+    box-shadow: 0 2px 4px ${({ theme }) => theme.darkTheme.colors.shadow};
+  }
+  
+`;
+
 const StyledInput = styled.textarea`
   border: none;
   font-size: 1.5rem;
-  padding: 0.5rem;
+  padding: ${({ theme }) => theme.spacing.small};
   width: 100%;
   outline: none;
   resize: vertical;
   min-height: 2.5rem;
   overflow: hidden;
   line-height: 1.5;
-  
+
+  @media (prefers-color-scheme: light) {
+    background-color: ${({ theme }) => theme.lightTheme.colors.inputBackground};
+    color: ${({ theme }) => theme.lightTheme.colors.text};
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: ${({ theme }) => theme.darkTheme.colors.inputBackground};
+    color: ${({ theme }) => theme.darkTheme.colors.text};
+  }
   &::placeholder {
-    color: #999;
+    @media (prefers-color-scheme: light) {
+      color: ${({ theme }) => theme.lightTheme.colors.placeholder};
+    }
+
+    @media (prefers-color-scheme: dark) {
+      color: ${({ theme }) => theme.darkTheme.colors.placeholder};
+    }
   }
 `;
 
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: .75rem;
-  padding: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.38);
-  width: 100%;
-`;
-
-const ButtonRow = styled.div`
-    display: flex;
+const ButtonRow = styled.div`    display: flex;
     flex-direction: row;
     align-items: flex-end;
     justify-content: center;
@@ -43,7 +69,7 @@ const ButtonGroup = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: ${({ theme }) => theme.spacing.small};
 `;
 
 const PromptInput = ({ onSubmit, isLoading }) => {
@@ -95,3 +121,4 @@ PromptInput.propTypes = {
 };
 
 export default PromptInput;
+

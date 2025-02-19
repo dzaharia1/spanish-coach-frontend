@@ -7,18 +7,25 @@ const StyledIconButton = styled.button`
   justify-content: center;
 
   padding: 10px;
-  width: 2.5rem;
+  width: 2.75rem;
   height: 2.5rem;
   font-size: 1rem;
   border: none;
   border-radius: 15px;
 
-  background-color: #FCFCFD;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  @media (prefers-color-scheme: light) {
+    background-color: ${({ theme }) => theme.lightTheme.colors.backgroundSecondary};
+    color: ${({ theme }) => theme.lightTheme.colors.text};
+    box-shadow: 0 2px 4px ${({ theme }) => theme.lightTheme.colors.shadow};
+  }
 
-  color: white;
+  @media (prefers-color-scheme: dark) {
+    background-color: ${({ theme }) => theme.darkTheme.colors.backgroundSecondary};
+    color: ${({ theme }) => theme.darkTheme.colors.text};
+    box-shadow: 0 2px 4px ${({ theme }) => theme.darkTheme.colors.shadow};
+  }
+
   cursor: pointer;
-  font-size: 1rem;
   transition: background-color 0.2s ease;
 
   img {

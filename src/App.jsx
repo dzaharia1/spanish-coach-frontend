@@ -3,20 +3,24 @@ import styled from 'styled-components'
 import PromptInput from './components/PromptInput'
 import TranslationResponse from './components/TranslationResponse'
 import './App.css'
+import { ThemeProvider } from 'styled-components'
+import { lightTheme, darkTheme, spacing, borderRadii } from './theme'
 
 const AppContainer = styled.div`
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
-
-  @media (screen and (max-width: 768px)) {
-    flex-direction: column;
+  padding: ${({ theme }) => theme.spacing.large} 0;
+  
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    padding: 0;
   }
 `;
 
 const Header = styled.header`
-  padding: 1rem;
+  padding: ${({ theme }) => theme.spacing.large};
   z-index: 100;
 
   @media (prefers-color-scheme: dark) {
@@ -27,16 +31,24 @@ const Header = styled.header`
 const ContentArea = styled.main`
   flex: 1;
   overflow: scroll;
-  padding: 2rem;
+  padding: ${({ theme }) => theme.spacing.large} ${({ theme }) => theme.spacing.xLarge};
 
   @media (prefers-color-scheme: dark) {
     background: var(--color-bg-dark);
   }
 `;
 
+const theme = {
+  lightTheme,
+  darkTheme,
+  spacing,
+  borderRadii
+};
+
 function App() {
   const [translation, setTranslation] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
   const handleSubmit = async (text) => {
     try {
@@ -92,14 +104,16 @@ function App() {
   }
 
   return (
-    <AppContainer>
-      <Header>
-        <PromptInput onSubmit={handleSubmit} isLoading={isLoading} />
-      </Header>
-      <ContentArea>
-        <TranslationResponse translation={translation} />
-      </ContentArea>
-    </AppContainer>
+    <ThemeProvider theme={theme}>
+      <AppContainer>
+        <Header>
+          <PromptInput onSubmit={handleSubmit} isLoading={isLoading} />
+        </Header>
+        <ContentArea>
+          <TranslationResponse translation={translation} />
+        </ContentArea>
+      </AppContainer>
+    </ThemeProvider>
   )
 }
 

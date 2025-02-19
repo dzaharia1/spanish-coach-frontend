@@ -11,22 +11,32 @@ const ResponseContainer = styled.div`
   
   table {
     border-collapse: collapse;
-    margin: 1em 0;
+    margin: ${({ theme }) => theme.spacing.large} 0;
     width: 100%;
   }
   
   th, td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: ${({ theme }) => theme.spacing.small};
     text-align: left;
   }
   
   th {
-    background-color: #f5f5f5;
+    background-color: ${({ theme }) => theme.lightTheme.colors.background};
+    color: ${({ theme }) => theme.lightTheme.colors.text};
+
+    @media (prefers-color-scheme: dark) {
+      background-color: ${({ theme }) => theme.darkTheme.colors.background};
+      color: ${({ theme }) => theme.darkTheme.colors.text};
+    }
   }
   
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
+  tr {
+    color: ${({ theme }) => theme.lightTheme.colors.text};
+
+    @media (prefers-color-scheme: dark) {
+      color: ${({ theme }) => theme.darkTheme.colors.text};
+    }
   }
 `;
 
