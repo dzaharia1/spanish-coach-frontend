@@ -50,9 +50,6 @@ export default defineConfig({
   ],
   server: {
     port: process.env.VITE_PORT || 3001,
-    allowedHosts: ['*']
-  },
-  preview: {
-    allowedHosts: ['*']
+    allowedHosts: ['spanish.danzaharia.com', '.danzaharia.com', "*.railway.app", 'all']
   }
 })
