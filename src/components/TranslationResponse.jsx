@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 const ResponseContainer = styled.div`
   text-align: left;
-  max-width: 800px;
+  /* max-width: 800px; */
   margin: 0;
   
   table {

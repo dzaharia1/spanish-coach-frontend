@@ -31,6 +31,12 @@ const Header = styled.header`
 const ContentArea = styled.main`
   flex: 1;
   overflow: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  
+  &::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
   padding: ${({ theme }) => theme.spacing.large} ${({ theme }) => theme.spacing.xLarge};
 
   @media (prefers-color-scheme: dark) {
