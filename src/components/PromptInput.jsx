@@ -30,22 +30,21 @@ const InputWrapper = styled.div`
 const StyledInput = styled.textarea`
   border: none;
   font-size: ${({ $inputLength }) => {
-    if ($inputLength < 50) return '1.5rem';
-    if ($inputLength < 75) return '1.25rem';
-    if ($inputLength < 200) return '1.125rem';
-    if ($inputLength < 300) return '1rem';
-    if ($inputLength < 400) return '0.875rem';
-    return '1rem';
+    if ($inputLength < 25) return '1.5rem';
+    if ($inputLength < 50) return '1.25rem';
+    if ($inputLength < 65) return '1rem';
+    if ($inputLength < 85) return '.875rem';
+    return '.8rem';
   }};
   padding: ${({ theme }) => theme.spacing.small};
   width: 100%;
   outline: none;
   resize: vertical;
   min-height: ${({ $inputLength }) => {
-    if ($inputLength < 50) return '2.5rem';
-    if ($inputLength < 75) return '3rem';
-    if ($inputLength < 200) return '3.5rem';
-    if ($inputLength < 300) return '4rem';
+    if ($inputLength < 25) return '2.5rem';
+    if ($inputLength < 50) return '3rem';
+    if ($inputLength < 65) return '3.5rem';
+    if ($inputLength < 85) return '4rem';
     return '4.5rem';
   }};
   overflow: hidden;
