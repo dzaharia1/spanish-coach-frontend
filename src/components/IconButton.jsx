@@ -12,6 +12,7 @@ const StyledIconButton = styled.button`
   font-size: 1rem;
   border: none;
   border-radius: 15px;
+  transition: 0.2s ease;
 
   @media (prefers-color-scheme: light) {
     background-color: ${({ theme }) => theme.lightTheme.colors.backgroundSecondary};
@@ -42,8 +43,9 @@ const StyledIconButton = styled.button`
   }
 
   &:disabled {
-    background-color: #cccccc;
+    opacity: 0.5;
     cursor: not-allowed;
+
   }
 `;
 

@@ -61,7 +61,20 @@ const StyledInput = styled.textarea`
 const ButtonRow = styled.div`    display: flex;
     flex-direction: row;
     align-items: flex-end;
-    justify-content: center;
+    justify-content: space-between;
+    width: 100%;
+
+    @keyframes pulse {
+      0% { opacity: .65; }
+      50% { opacity: 1; }
+      100% { opacity: .65; }
+    }
+
+    p {
+      font-weight: 700;
+      margin: 0;
+      animation: pulse .75s ease-in-out infinite;
+    }
 `;
 
 const ButtonGroup = styled.div`
@@ -95,23 +108,23 @@ const PromptInput = ({ onSubmit, isLoading }) => {
 
   return (
     <InputWrapper>
-        <StyledInput
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Enter text to translate..."
+      <StyledInput
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyPress={handleKeyPress}
+        placeholder="Enter text to translate..."
       />
-      {input !== "" &&
-        <ButtonRow>
+      <ButtonRow>
+        <div>
           {isLoading && (
             <p>Translating...</p>
           )}
-          <ButtonGroup>
-              <IconButton icon="delete" onClick={handleClear} />
-              <Button onClick={handleSubmit}>Translate</Button>
-          </ButtonGroup>
-        </ButtonRow>
-      }
+        </div>
+        <ButtonGroup>
+            <IconButton icon="delete" onClick={handleClear} disabled={input === ""} />
+            <Button onClick={handleSubmit} disabled={input === ""}>Translate</Button>
+        </ButtonGroup>
+      </ButtonRow>
     </InputWrapper>
   );
 };

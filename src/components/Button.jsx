@@ -29,7 +29,7 @@ const StyledButton = styled.button`
   }
 
   &:disabled {
-    background-color: #cccccc;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 `;
