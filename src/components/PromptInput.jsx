@@ -121,8 +121,15 @@ const PromptInput = ({ onSubmit, isLoading }) => {
           )}
         </div>
         <ButtonGroup>
-            <IconButton icon="delete" onClick={handleClear} disabled={input === ""} />
-            <Button onClick={handleSubmit} disabled={input === ""}>Translate</Button>
+            <IconButton
+              icon="delete"
+              onClick={handleClear}
+              disabled={input === "" || isLoading} />
+            <Button
+              onClick={handleSubmit}
+              disabled={input === "" || isLoading}>
+                Translate
+            </Button>
         </ButtonGroup>
       </ButtonRow>
     </InputWrapper>
