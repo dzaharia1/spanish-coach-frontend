@@ -14,8 +14,8 @@ export default defineConfig({
         name: 'Spanish Coach',
         short_name: 'SpanishCoach',
         description: 'Your personal Spanish language learning assistant',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
+        theme_color: '#FCFCFD',
+        background_color: '#FCFCFD',
         display: 'standalone',
         icons: [
           {
