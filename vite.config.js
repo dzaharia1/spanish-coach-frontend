@@ -51,5 +51,8 @@ export default defineConfig({
   server: {
     port: process.env.VITE_PORT || 3001,
     allowedHosts: ['*']
+  },
+  preview: {
+    allowedHosts: ['*']
   }
 })
