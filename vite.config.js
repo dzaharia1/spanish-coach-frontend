@@ -50,9 +50,18 @@ export default defineConfig({
   ],
   server: {
     port: process.env.VITE_PORT || 3001,
-    allowedHosts: ['spanish.danzaharia.com', '.danzaharia.com', ".railway.app", 'all']
+    allowedHosts: ['spanish.danzaharia.com', '.danzaharia.com', ".railway.app", 'all'],
+    proxy: {
+      '/v1': {
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/v1/, '/v1'),
+      }
+    }
   },
   preview: {
     allowedHosts: ['spanish.danzaharia.com', '.danzaharia.com', ".railway.app", 'all']
   }
 })
+
+console.log(process.env.VITE_API_URL)
