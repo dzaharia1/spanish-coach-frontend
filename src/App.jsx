@@ -5,6 +5,7 @@ import TranslationResponse from './components/TranslationResponse'
 import './App.css'
 import { ThemeProvider } from 'styled-components'
 import { lightTheme, darkTheme, spacing, borderRadii } from './theme'
+import systemInstructions from '../systemInstructions'
 
 const AppContainer = styled.div`
   display: flex;
@@ -61,7 +62,7 @@ function App() {
       setIsLoading(true)
       setTranslation('') // Clear previous translation
       
-      const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/translate`;
+      const apiUrl = '/v1/chat/completions'
       console.log('Making request to:', apiUrl); // Add debugging
 
       const response = await fetch(apiUrl, {
@@ -69,7 +70,21 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ 
+          "model": "gemma-3-27b-it-GGUF/gemma-3-27b-it-Q4_K_M.gguf",
+          "messages": [
+            {
+              "role": "system",
+              "content": systemInstructions
+            },
+            {
+              "role": "user",
+              "content": text
+            }
+          ],
+          "temperature": 1,
+          "stream": true
+        }),
       })
 
       if (!response.ok) {
@@ -91,8 +106,8 @@ function App() {
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const data = JSON.parse(line.slice(6));
-            if (data.text) {
-              setTranslation(prev => prev + data.text);
+            if (data.choices && data.choices[0].delta && data.choices[0].delta.content) {
+              setTranslation(prev => prev + data.choices[0].delta.content);
             }
             if (data.error) {
               console.error(data.error);
@@ -103,7 +118,7 @@ function App() {
       }
     } catch (error) {
       console.error('Error:', error);
-      setTranslation('Error occurred while translating');
+      // setTranslation('Error occurred while translating');
     } finally {
       setIsLoading(false)
     }
