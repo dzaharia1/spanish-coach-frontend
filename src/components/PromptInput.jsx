@@ -126,7 +126,7 @@ const PromptInput = ({ onSubmit, isLoading }) => {
         $inputLength={input.length}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder="Enter text to translate..."
+        placeholder="Enter a word or phrase. Ingresa una palabra o frase"
       />
       <ButtonRow>
         <div>
