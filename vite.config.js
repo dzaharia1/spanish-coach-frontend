@@ -54,5 +54,9 @@ export default defineConfig({
   },
   preview: {
     allowedHosts: ['spanish.danzaharia.com', '.danzaharia.com', ".railway.app", 'all']
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets'
   }
 })
