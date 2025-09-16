@@ -1,4 +1,4 @@
-import { use, useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PromptInput from './components/PromptInput'
 import TranslationResponse from './components/TranslationResponse'
@@ -59,8 +59,11 @@ const routes = [
 function App() {
   const [translation, setTranslation] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(false)
-  const [languageMode, setLanguageMode] = useState(routes[0])
+  const [languageMode, setLanguageMode] = useState(localStorage.getItem('languageMode') || routes[0]);
+
+  useEffect(() => {
+    localStorage.setItem('languageMode', languageMode);
+  }, [languageMode]);
 
   const handleSubmit = async (text) => {
     try {
@@ -119,10 +122,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <AppContainer>
         <Header>
-          <PromptInput onSubmit={handleSubmit} isLoading={isLoading} />
+          <PromptInput
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+            languageMode={languageMode}
+            setLanguageMode={setLanguageMode} />
         </Header>
         <ContentArea>
-          <TranslationResponse translation={translation} />
+          <TranslationResponse translation={translation} languageMode={languageMode} />
         </ContentArea>
       </AppContainer>
     </ThemeProvider>

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import IconButton from './IconButton';
 import Button from './Button';
+import ModeSwitcher from './ModeSwitcher';
 
 const InputWrapper = styled.div`
   display: flex;
@@ -83,7 +84,7 @@ const ButtonRow = styled.div`    display: flex;
       100% { opacity: .65; }
     }
 
-    p {
+    .loadingIndicator {
       font-weight: 700;
       margin: 0;
       animation: pulse .75s ease-in-out infinite;
@@ -94,11 +95,12 @@ const ButtonGroup = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    flex: 1;
     gap: ${({ theme }) => theme.spacing.small};
 `;
 
-const PromptInput = ({ onSubmit, isLoading }) => {
+const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => {
   const [input, setInput] = useState('');
 
   const handleSubmit = () => {
@@ -119,6 +121,12 @@ const PromptInput = ({ onSubmit, isLoading }) => {
     }
   };
 
+  useEffect(() => {
+    handleClear();
+    document.querySelector('textarea').focus();
+  }, [languageMode]);
+
+
   return (
     <InputWrapper>
       <StyledInput
@@ -126,24 +134,23 @@ const PromptInput = ({ onSubmit, isLoading }) => {
         $inputLength={input.length}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder="Ingresa una palabra o frase"
+        placeholder={languageMode === 'spanishHelp' ? "I can help you learn Spanish. Enter a word or phrase for me to translate, review, or explain" : "Te ayudo a aprender inglés. Ingresa una palabra o frase para que la traduzca, revise o explique."}
       />
       <ButtonRow>
-        <div>
-          {isLoading && (
-            <p>Translating...</p>
-          )}
-        </div>
         <ButtonGroup>
-            <IconButton
-              icon="delete"
-              onClick={handleClear}
-              disabled={input === "" || isLoading} />
-            <Button
-              onClick={handleSubmit}
-              disabled={input === "" || isLoading}>
-                Translate
-            </Button>
+          <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
+          {isLoading && (
+            <p className="loadingIndicator">Translating...</p>
+          )}
+          <IconButton
+            icon="delete"
+            onClick={handleClear}
+            disabled={input === "" || isLoading} />
+          <Button
+            onClick={handleSubmit}
+            disabled={input === "" || isLoading}>
+              Translate
+          </Button>
         </ButtonGroup>
       </ButtonRow>
     </InputWrapper>
@@ -151,7 +158,10 @@ const PromptInput = ({ onSubmit, isLoading }) => {
 };
 
 PromptInput.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  languageMode: PropTypes.string.isRequired,
+  setLanguageMode: PropTypes.func.isRequired,
 };
 
 export default PromptInput;
