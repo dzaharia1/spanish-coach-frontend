@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { use, useState } from 'react'
 import styled from 'styled-components'
 import PromptInput from './components/PromptInput'
 import TranslationResponse from './components/TranslationResponse'
@@ -51,17 +51,23 @@ const theme = {
   borderRadii
 };
 
+const routes = [
+  "spanishHelp",
+  "englishHelp"
+]
+
 function App() {
   const [translation, setTranslation] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [languageMode, setLanguageMode] = useState(routes[0])
 
   const handleSubmit = async (text) => {
     try {
       setIsLoading(true)
       setTranslation('') // Clear previous translation
       
-      const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/translate`;
+      const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/${languageMode}`;
       console.log('Making request to:', apiUrl); // Add debugging
 
       const response = await fetch(apiUrl, {
