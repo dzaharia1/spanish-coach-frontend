@@ -41,6 +41,21 @@ const ResponseContainer = styled.div`
   }
 `;
 
+const EmptyStateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  & > * {
+    margin: 0 0 12px 0;
+  }
+
+  h2, h4 {
+    margin: 4px 0 4px 0;
+  }
+`
+
 const spanishLearnerEmptyMessage = `
 ### Welcome to my language coach!
 
@@ -84,7 +99,14 @@ const TranslationResponse = ({ translation, languageMode }) => {
 
   return (
     <ResponseContainer>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>{translation !== '' ? translation : emptyMessage}</ReactMarkdown>
+      {translation === '' && (
+        <EmptyStateContainer>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {emptyMessage}
+          </ReactMarkdown>
+        </EmptyStateContainer>
+      )}
+      {translation !== '' && <ReactMarkdown remarkPlugins={[remarkGfm]}>{translation}</ReactMarkdown>}
     </ResponseContainer>
   );
 };
