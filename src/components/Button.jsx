@@ -9,6 +9,7 @@ const StyledButton = styled.button`
 
   background: ${({ variant }) => variant === 'primary' ? 'linear-gradient(180deg, rgba(95, 70, 252, 0.78), #5F46FC)' : 'white'};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
+  box-shadow: ${({ variant }) => variant === 'primary' ? '0 4px 12px rgba(0, 0, 0, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.2)'};
   font-weight: 700;
   color: white;
   color: ${({ variant }) => variant === 'primary' ? 'white' : 'black'};

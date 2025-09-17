@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const ResponseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   text-align: left;
   /* max-width: 800px; */
   margin: 0;
@@ -46,6 +49,7 @@ const EmptyStateContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  flex: 1;
 
   & > * {
     margin: 0 0 12px 0;
@@ -57,7 +61,7 @@ const EmptyStateContainer = styled.div`
 `
 
 const spanishLearnerEmptyMessage = `
-### Welcome to my language coach!
+### Welcome to the language coach!
 
 You can enter anything you want in either Spanish or English, and I'll figure out how to help you.
 
@@ -71,7 +75,7 @@ If it's in English, I'll show you how to say it in Spanish, with dialectic and r
 `;
 
 const englishLearnerEmptyMessage = `
-### Bienvenidos a mi entrenedor de idioma!
+### Bienvenidos a el entrenedor de idioma!
 
 Puedes ingresar cualquier cosa que quieras en español o inglés, y te ayudaré.
 

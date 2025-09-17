@@ -134,13 +134,13 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
         $inputLength={input.length}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder={languageMode === 'spanishHelp' ? "I can help you learn Spanish. Enter a word or phrase for me to translate, review, or explain" : "Te ayudo a aprender inglés. Ingresa una palabra o frase para que la traduzca, revise o explique."}
+        placeholder={languageMode === 'spanishHelp' ? "I can help you learn Spanish" : "Te ayudo a aprender inglés"}
       />
       <ButtonRow>
         <ButtonGroup>
           <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
           {isLoading && (
-            <p className="loadingIndicator">Translating...</p>
+            <p className="loadingIndicator">...</p>
           )}
           <IconButton
             icon="delete"

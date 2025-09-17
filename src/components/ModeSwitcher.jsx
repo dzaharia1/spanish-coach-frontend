@@ -24,7 +24,7 @@ const ModeSwitcher = ({ languageMode, setLanguageMode} ) => {
     return (
         <ModeSwitcherWrapper>
             <Button onClick={switchLanguage} variant="secondary">
-                {languageMode === 'spanishHelp' ? '🇲🇽 Learning Spanish' : '🇬🇧 Aprendizaje de inglés'}
+                {languageMode === 'spanishHelp' ? '🇲🇽' : '🇺🇸'}
             </Button>
         </ModeSwitcherWrapper>
     );
