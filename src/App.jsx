@@ -65,20 +65,21 @@ function App() {
     localStorage.setItem('languageMode', languageMode);
   }, [languageMode]);
 
-  const handleSubmit = async (text) => {
+  const handleSubmit = async (text, model) => {
     try {
       setIsLoading(true)
       setTranslation('') // Clear previous translation
-      
+
       const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/${languageMode}`;
       console.log('Making request to:', apiUrl); // Add debugging
+      console.log('Model:', model);
 
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, model }),
       })
 
       if (!response.ok) {
@@ -93,10 +94,10 @@ function App() {
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
-        
+
         const chunk = decoder.decode(value);
         const lines = chunk.split('\n');
-        
+
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             const data = JSON.parse(line.slice(6));

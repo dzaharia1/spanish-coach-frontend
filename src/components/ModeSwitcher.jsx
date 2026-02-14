@@ -7,12 +7,12 @@ const ModeSwitcherWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  flex: 1;
+//   flex: 1;
   gap: ${({ theme }) => theme.spacing.small};
 `;
 
 
-const ModeSwitcher = ({ languageMode, setLanguageMode} ) => {
+const ModeSwitcher = ({ languageMode, setLanguageMode }) => {
     const switchLanguage = () => {
         if (languageMode === 'spanishHelp') {
             setLanguageMode('englishHelp');

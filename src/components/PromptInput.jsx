@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import IconButton from './IconButton';
 import Button from './Button';
 import ModeSwitcher from './ModeSwitcher';
+import ModelSelector from './ModelSelector';
 
 const InputWrapper = styled.div`
   display: flex;
@@ -102,10 +103,11 @@ const ButtonGroup = styled.div`
 
 const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => {
   const [input, setInput] = useState('');
+  const [model, setModel] = useState('complete');
 
   const handleSubmit = () => {
     if (input.trim()) {
-      onSubmit(input);
+      onSubmit(input, model);
     }
   };
 
@@ -139,8 +141,9 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
       <ButtonRow>
         <ButtonGroup>
           <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
+          <ModelSelector model={model} setModel={setModel} languageMode={languageMode} />
           {isLoading && (
-            <p className="loadingIndicator">...</p>
+            <p className="loadingIndicator">Thinking ...</p>
           )}
           <IconButton
             icon="delete"
@@ -149,7 +152,7 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
           <Button
             onClick={handleSubmit}
             disabled={input === "" || isLoading}>
-              Translate
+            Translate
           </Button>
         </ButtonGroup>
       </ButtonRow>
