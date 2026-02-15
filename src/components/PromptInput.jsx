@@ -150,10 +150,10 @@ const PromptInput = ({
           languageMode === "spanishHelp"
             ? translationType === "concise"
               ? "Translating quickly..."
-              : "Drafting an explanation..."
+              : "Exploring..."
             : translationType === "concise"
               ? "Traduciendo rápidamente..."
-              : "Redactando una explicación..."
+              : "Explorando..."
         }
       />
       <InputWrapper>
@@ -184,7 +184,7 @@ const PromptInput = ({
             />
             <DoubleButton
               primaryText={
-                languageMode === "spanishHelp" ? "Explain" : "Explica"
+                languageMode === "spanishHelp" ? "Explore" : "Explora"
               }
               secondaryText={
                 languageMode === "spanishHelp" ? "Translate" : "Traduce"
