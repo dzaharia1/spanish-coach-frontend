@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import IconButton from './IconButton';
-import Button from './Button';
-import ModeSwitcher from './ModeSwitcher';
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import IconButton from "./IconButton";
+import Button from "./Button";
+import ModeSwitcher from "./ModeSwitcher";
+import DoubleButton from "./DoubleButton";
 
 const InputWrapper = styled.div`
   display: flex;
@@ -25,28 +26,27 @@ const InputWrapper = styled.div`
     color: ${({ theme }) => theme.darkTheme.colors.text};
     box-shadow: 0 2px 4px ${({ theme }) => theme.darkTheme.colors.shadow};
   }
-  
 `;
 
 const StyledInput = styled.textarea`
   border: none;
   font-size: ${({ $inputLength }) => {
-    if ($inputLength < 25) return '1.5rem';
-    if ($inputLength < 50) return '1.25rem';
-    if ($inputLength < 65) return '1rem';
-    if ($inputLength < 85) return '.875rem';
-    return '.8rem';
+    if ($inputLength < 25) return "1.5rem";
+    if ($inputLength < 50) return "1.25rem";
+    if ($inputLength < 65) return "1rem";
+    if ($inputLength < 85) return ".875rem";
+    return ".8rem";
   }};
   padding: ${({ theme }) => theme.spacing.small};
   width: 100%;
   outline: none;
   resize: vertical;
   min-height: ${({ $inputLength }) => {
-    if ($inputLength < 25) return '2.5rem';
-    if ($inputLength < 50) return '3rem';
-    if ($inputLength < 65) return '3.5rem';
-    if ($inputLength < 85) return '4rem';
-    return '4.5rem';
+    if ($inputLength < 25) return "2.5rem";
+    if ($inputLength < 50) return "3rem";
+    if ($inputLength < 65) return "3.5rem";
+    if ($inputLength < 85) return "4rem";
+    return "4.5rem";
   }};
   overflow: hidden;
   line-height: 1.5;
@@ -72,60 +72,71 @@ const StyledInput = styled.textarea`
   }
 `;
 
-const ButtonRow = styled.div`    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 100%;
+const ButtonRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
 
-    @keyframes pulse {
-      0% { opacity: .65; }
-      50% { opacity: 1; }
-      100% { opacity: .65; }
+  @keyframes pulse {
+    0% {
+      opacity: 0.35;
     }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.35;
+    }
+  }
 
-    .loadingIndicator {
-      font-weight: 700;
-      margin: 0;
-      animation: pulse .75s ease-in-out infinite;
-    }
+  .loadingIndicator {
+    font-weight: 700;
+    margin: 0;
+    animation: pulse 0.75s ease-in-out infinite;
+  }
 `;
 
 const ButtonGroup = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    flex: 1;
-    gap: ${({ theme }) => theme.spacing.small};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: ${({ theme }) => theme.spacing.small};
 `;
 
-const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => {
-  const [input, setInput] = useState('');
+const PromptInput = ({
+  onSubmit,
+  isLoading,
+  languageMode,
+  setLanguageMode,
+}) => {
+  const [input, setInput] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = (model) => {
     if (input.trim()) {
-      onSubmit(input);
+      onSubmit(input, model);
     }
   };
 
   const handleClear = () => {
-    setInput('');
-    document.querySelector('textarea').focus();
+    setInput("");
+    document.querySelector("textarea").focus();
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit();
+      handleSubmit("complete");
     }
   };
 
   useEffect(() => {
     handleClear();
-    document.querySelector('textarea').focus();
+    document.querySelector("textarea").focus();
   }, [languageMode]);
-
 
   return (
     <InputWrapper>
@@ -134,23 +145,48 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
         $inputLength={input.length}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={handleKeyPress}
-        placeholder={languageMode === 'spanishHelp' ? "I can help you learn Spanish" : "Te ayudo a aprender inglés"}
+        placeholder={
+          languageMode === "spanishHelp"
+            ? "I can help you learn Spanish"
+            : "Te ayudo a aprender inglés"
+        }
       />
       <ButtonRow>
         <ButtonGroup>
-          <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
-          {isLoading && (
-            <p className="loadingIndicator">...</p>
-          )}
+          <ModeSwitcher
+            languageMode={languageMode}
+            setLanguageMode={setLanguageMode}
+          />
+          {isLoading && <p className="loadingIndicator">Thinking...</p>}
           <IconButton
             icon="delete"
             onClick={handleClear}
-            disabled={input === "" || isLoading} />
-          <Button
-            onClick={handleSubmit}
-            disabled={input === "" || isLoading}>
-              Translate
+            disabled={input === "" || isLoading}
+          />
+          <DoubleButton
+            primaryText={
+              languageMode === "spanishHelp" ? "Explain" : "Explique"
+            }
+            secondaryText={
+              languageMode === "spanishHelp" ? "Translate" : "Traduce"
+            }
+            primaryAction={() => handleSubmit("complete")}
+            secondaryAction={() => handleSubmit("concise")}
+            primaryDisabled={input === "" || isLoading}
+            secondaryDisabled={input === "" || isLoading}
+          />
+          {/* <Button
+            onClick={() => handleSubmit("complete")}
+            disabled={input === "" || isLoading}
+          >
+            {languageMode === "spanishHelp" ? "Explain" : "Explique"}
           </Button>
+          <Button
+            onClick={() => handleSubmit("concise")}
+            disabled={input === "" || isLoading}
+          >
+            {languageMode === "spanishHelp" ? "Translate" : "Traduce"}
+          </Button> */}
         </ButtonGroup>
       </ButtonRow>
     </InputWrapper>
@@ -165,4 +201,3 @@ PromptInput.propTypes = {
 };
 
 export default PromptInput;
-

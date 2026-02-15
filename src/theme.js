@@ -21,6 +21,7 @@ export const darkTheme = {
 }; 
 
 export const spacing = {
+  xSmall: '0.25rem',
   small: '0.5rem',
   medium: '0.75rem',
   large: '1rem',
