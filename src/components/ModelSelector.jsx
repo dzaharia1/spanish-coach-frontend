@@ -134,7 +134,7 @@ const ModelSelector = ({ model, setModel, languageMode }) => {
       value: 'concise',
       label: isSpanish ? 'Concise' : 'Conciso',
       description: isSpanish
-        ? 'Just quickly translate my english and proofread my Spanish'
+        ? 'Just quickly translate my English and proofread my Spanish'
         : 'Simplemente traduce rápido mi inglés y corrige mi español'
     }
   ];

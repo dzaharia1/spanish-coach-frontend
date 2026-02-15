@@ -183,7 +183,7 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
         </ButtonGroup>
         <ButtonGroup>
           {isLoading && (
-            <p className="loadingIndicator">Thinking ...</p>
+            <p className="loadingIndicator">{languageMode === 'spanishHelp' ? 'Thinking ...' : 'Pensando ...'}</p>
           )}
           <IconButton
             icon="delete"
@@ -192,7 +192,7 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
           <Button
             onClick={handleSubmit}
             disabled={input === "" || isLoading}>
-            Translate
+            {languageMode === 'spanishHelp' ? 'Translate' : 'Traducir'}
           </Button>
         </ButtonGroup>
       </ButtonRow>
