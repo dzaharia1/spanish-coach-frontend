@@ -1,7 +1,6 @@
-
-import { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import { useState, useRef, useEffect } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
@@ -50,7 +49,8 @@ const Arrow = styled.span`
   position: absolute;
   right: 12px;
   top: 50%;
-  transform: translateY(-50%) rotate(${({ $isOpen }) => ($isOpen ? '180deg' : '0deg')});
+  transform: translateY(-50%)
+    rotate(${({ $isOpen }) => ($isOpen ? "180deg" : "0deg")});
   transition: transform 0.2s ease;
   pointer-events: none;
   font-size: 0.8em;
@@ -62,20 +62,24 @@ const DropdownMenu = styled.div`
   left: 0;
   width: 300px; /* Fixed width for the rich content */
   margin-top: 8px;
-  border-radius: ${({ theme }) => theme.borderRadii?.medium || '8px'};
+  border-radius: ${({ theme }) => theme.borderRadii?.medium || "8px"};
   overflow: hidden;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 4px;
 
   @media (prefers-color-scheme: light) {
-    background-color: ${({ theme }) => theme.lightTheme?.colors?.background || '#fff'};
-    border: 1px solid ${({ theme }) => theme.lightTheme?.colors?.border || '#eee'};
+    background-color: ${({ theme }) =>
+      theme.lightTheme?.colors?.background || "#fff"};
+    border: 1px solid
+      ${({ theme }) => theme.lightTheme?.colors?.border || "#eee"};
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: ${({ theme }) => theme.darkTheme?.colors?.background || '#222'};
-    border: 1px solid ${({ theme }) => theme.darkTheme?.colors?.border || '#444'};
+    background-color: ${({ theme }) =>
+      theme.darkTheme?.colors?.background || "#222"};
+    border: 1px solid
+      ${({ theme }) => theme.darkTheme?.colors?.border || "#444"};
   }
 
   @media (max-width: 768px) {
@@ -96,11 +100,14 @@ const MenuItem = styled.div`
   text-align: left;
   background-color: ${({ $isSelected, theme }) =>
     $isSelected
-      ? (theme.lightTheme ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)')
-      : 'transparent'};
+      ? theme.lightTheme
+        ? "rgba(0,0,0,0.05)"
+        : "rgba(255,255,255,0.1)"
+      : "transparent"};
 
   &:hover {
-    background-color: ${({ theme }) => theme.lightTheme ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)'};
+    background-color: ${({ theme }) =>
+      theme.lightTheme ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)"};
   }
 
   h3 {
@@ -120,26 +127,27 @@ const MenuItem = styled.div`
 const ModelSelector = ({ model, setModel, languageMode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
-  const isSpanish = languageMode === 'spanishHelp';
+  const isSpanish = languageMode === "spanishHelp";
 
   const options = [
     {
-      value: 'complete',
-      label: isSpanish ? 'Complete' : 'Completo',
+      value: "complete",
+      label: isSpanish ? "Complete" : "Completo",
       description: isSpanish
-        ? 'Give me a short lesson around my input, with cultural and grammatical notes'
-        : 'Dame una lección breve sobre mi entrada, con notas culturales y gramaticales'
+        ? "Give me a short lesson around my input, with cultural and grammatical notes"
+        : "Dame una lección breve sobre mi entrada, con notas culturales y gramaticales",
     },
     {
-      value: 'concise',
-      label: isSpanish ? 'Concise' : 'Conciso',
+      value: "concise",
+      label: isSpanish ? "Concise" : "Conciso",
       description: isSpanish
-        ? 'Just quickly translate my English and proofread my Spanish'
-        : 'Simplemente traduce rápido mi inglés y corrige mi español'
-    }
+        ? "Just quickly translate my English and proofread my Spanish"
+        : "Simplemente traduce rápido mi español y corrige mi ingles",
+    },
   ];
 
-  const selectedOption = options.find(opt => opt.value === model) || options[0];
+  const selectedOption =
+    options.find((opt) => opt.value === model) || options[0];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -147,8 +155,8 @@ const ModelSelector = ({ model, setModel, languageMode }) => {
         setIsOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
