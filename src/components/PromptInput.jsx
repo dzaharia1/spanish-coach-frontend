@@ -128,7 +128,11 @@ const ButtonGroup = styled.div`
 
 const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => {
   const [input, setInput] = useState('');
-  const [model, setModel] = useState('complete');
+  const [model, setModel] = useState(() => {
+    // Load saved model preference from localStorage
+    const savedModel = localStorage.getItem('spanish-coach-model');
+    return savedModel || 'complete';
+  });
 
   const handleSubmit = () => {
     if (input.trim()) {
@@ -147,6 +151,11 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
       handleSubmit();
     }
   };
+
+  // Save model preference to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('spanish-coach-model', model);
+  }, [model]);
 
   useEffect(() => {
     handleClear();
