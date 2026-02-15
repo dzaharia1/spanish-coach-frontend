@@ -164,9 +164,7 @@ const PromptInput = ({
             disabled={input === "" || isLoading}
           />
           <DoubleButton
-            primaryText={
-              languageMode === "spanishHelp" ? "Explain" : "Explique"
-            }
+            primaryText={languageMode === "spanishHelp" ? "Explain" : "Explica"}
             secondaryText={
               languageMode === "spanishHelp" ? "Translate" : "Traduce"
             }
