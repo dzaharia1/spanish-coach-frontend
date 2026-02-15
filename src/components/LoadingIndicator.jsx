@@ -37,8 +37,8 @@ const StyledLoadingIndicator = styled.div`
 
   padding: ${({ theme }) => theme.spacing.small}
     ${({ theme }) => theme.spacing.large};
-  border-radius: ${({ theme }) => theme.borderRadii.small}
-    ${({ theme }) => theme.borderRadii.small} 0 0;
+  border-radius: ${({ theme }) => theme.borderRadii.large}
+    ${({ theme }) => theme.borderRadii.large} 0 0;
 
   @media (prefers-color-scheme: light) {
     background-color: ${({ theme }) => theme.lightTheme.colors.background};
@@ -57,8 +57,8 @@ const StyledLoadingIndicator = styled.div`
     right: ${({ theme }) => theme.spacing.xLarge};
     transform: ${(props) =>
       props.$active ? "translateY(0)" : "translateY(-100%)"};
-    border-radius: 0 0 ${({ theme }) => theme.borderRadii.small}
-      ${({ theme }) => theme.borderRadii.small};
+    border-radius: 0 0 ${({ theme }) => theme.borderRadii.large}
+      ${({ theme }) => theme.borderRadii.large};
   }
 `;
 
