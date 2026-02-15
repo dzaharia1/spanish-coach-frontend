@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PromptInput from "./components/PromptInput";
 import TranslationResponse from "./components/TranslationResponse";
@@ -62,15 +62,27 @@ function App() {
   const [languageMode, setLanguageMode] = useState(
     localStorage.getItem("languageMode") || routes[0],
   );
+  const abortControllerRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem("languageMode", languageMode);
   }, [languageMode]);
 
+  const handleStop = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+      setIsLoading(false);
+    }
+  };
+
   const handleSubmit = async (text, model) => {
     try {
       setIsLoading(true);
       setTranslation(""); // Clear previous translation
+
+      abortControllerRef.current = new AbortController();
+      const signal = abortControllerRef.current.signal;
 
       const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/${languageMode}`;
       console.log("Making request to:", apiUrl); // Add debugging
@@ -81,6 +93,7 @@ function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ text, model }),
+        signal,
       });
 
       if (!response.ok) {
@@ -115,10 +128,15 @@ function App() {
         }
       }
     } catch (error) {
-      console.error("Error:", error);
-      setTranslation("Error occurred while translating");
+      if (error.name === "AbortError") {
+        console.log("Fetch aborted");
+      } else {
+        console.error("Error:", error);
+        setTranslation("Error occurred while translating");
+      }
     } finally {
       setIsLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -128,6 +146,7 @@ function App() {
         <Header>
           <PromptInput
             onSubmit={handleSubmit}
+            onStop={handleStop}
             isLoading={isLoading}
             languageMode={languageMode}
             setLanguageMode={setLanguageMode}

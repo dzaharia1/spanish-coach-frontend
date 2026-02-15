@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import IconButton from "./IconButton";
+import LoadingIndicator from "./LoadingIndicator";
 import ModeSwitcher from "./ModeSwitcher";
 import DoubleButton from "./DoubleButton";
+import IconButton from "./IconButton";
 
 const InputWrapper = styled.div`
   display: flex;
@@ -101,88 +102,19 @@ const ButtonGroup = styled.div`
   gap: ${({ theme }) => theme.spacing.small};
 `;
 
-const LoadingIndicator = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.large};
-
-  bottom: calc(100% - ${({ theme }) => theme.spacing.large});
-  left: ${({ theme }) => theme.spacing.xLarge};
-  right: ${({ theme }) => theme.spacing.xLarge};
-  transform: ${(props) =>
-    props.active ? "translateY(0)" : "translateY(100%)"};
-  transition: transform 0.2s ease;
-  z-index: -1;
-
-  padding: ${({ theme }) => theme.spacing.small}
-    ${({ theme }) => theme.spacing.large};
-  border-radius: ${({ theme }) => theme.borderRadii.small}
-    ${({ theme }) => theme.borderRadii.small} 0 0;
-
-  @media (prefers-color-scheme: light) {
-    background-color: ${({ theme }) => theme.lightTheme.colors.background};
-    color: ${({ theme }) => theme.lightTheme.colors.text};
-  }
-
-  @media (prefers-color-scheme: dark) {
-    background-color: ${({ theme }) => theme.darkTheme.colors.background};
-    color: ${({ theme }) => theme.darkTheme.colors.text};
-  }
-
-  @media (min-width: 768px) {
-    bottom: unset;
-    top: calc(100% - ${({ theme }) => theme.spacing.large});
-    left: ${({ theme }) => theme.spacing.xLarge};
-    right: ${({ theme }) => theme.spacing.xLarge};
-    transform: ${(props) =>
-      props.active ? "translateY(0)" : "translateY(-100%)"};
-    border-radius: 0 0 ${({ theme }) => theme.borderRadii.small}
-      ${({ theme }) => theme.borderRadii.small};
-  }
-
-  @keyframes pulse {
-    0% {
-      opacity: 0.35;
-    }
-    20% {
-      opacity: 1;
-    }
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.35;
-    }
-  }
-
-  .dot {
-    animation: pulse 1.5s infinite;
-    width: ${({ theme }) => theme.spacing.small};
-    height: ${({ theme }) => theme.spacing.small};
-    border-radius: 50%;
-    margin: 0;
-    background: linear-gradient(180deg, rgba(95, 70, 252, 0.78), #5f46fc);
-  }
-
-  p {
-    animation: pulse 1.5s infinite;
-    text-align: left;
-    margin: 0;
-  }
-`;
-
 const PromptInput = ({
   onSubmit,
+  onStop,
   isLoading,
   languageMode,
   setLanguageMode,
 }) => {
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
+  const [translationType, setTranslationType] = useState("concise");
 
   const handleSubmit = (model) => {
+    setTranslationType(model);
     if (input.trim()) {
       onSubmit(input, model);
     }
@@ -198,6 +130,10 @@ const PromptInput = ({
       e.preventDefault();
       handleSubmit("complete");
     }
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      handleSubmit("concise");
+    }
   };
 
   useEffect(() => {
@@ -207,10 +143,19 @@ const PromptInput = ({
 
   return (
     <>
-      <LoadingIndicator active={isLoading}>
-        <div className="dot"></div>
-        <p>Thinking</p>
-      </LoadingIndicator>
+      <LoadingIndicator
+        active={isLoading}
+        stopAction={onStop}
+        text={
+          languageMode === "spanishHelp"
+            ? translationType === "concise"
+              ? "Translating quickly..."
+              : "Drafting an explanation..."
+            : translationType === "concise"
+              ? "Traduciendo rápidamente..."
+              : "Redactando una explicación..."
+        }
+      />
       <InputWrapper>
         <StyledInput
           value={input}
@@ -258,6 +203,7 @@ const PromptInput = ({
 
 PromptInput.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  onStop: PropTypes.func,
   isLoading: PropTypes.bool.isRequired,
   languageMode: PropTypes.string.isRequired,
   setLanguageMode: PropTypes.func.isRequired,
