@@ -1,9 +1,9 @@
 // import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import { useState, useEffect } from 'react';
-import remarkGfm from 'remark-gfm';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import ReactMarkdown from "react-markdown";
+import { useState, useEffect } from "react";
+import remarkGfm from "remark-gfm";
+import PropTypes from "prop-types";
+import styled from "styled-components";
 
 const ResponseContainer = styled.div`
   display: flex;
@@ -12,19 +12,20 @@ const ResponseContainer = styled.div`
   text-align: left;
   /* max-width: 800px; */
   margin: 0;
-  
+
   table {
     border-collapse: collapse;
     margin: ${({ theme }) => theme.spacing.large} 0;
     width: 100%;
   }
-  
-  th, td {
+
+  th,
+  td {
     border: 1px solid #ddd;
     padding: ${({ theme }) => theme.spacing.small};
     text-align: left;
   }
-  
+
   th {
     background-color: ${({ theme }) => theme.lightTheme.colors.background};
     color: ${({ theme }) => theme.lightTheme.colors.text};
@@ -34,7 +35,7 @@ const ResponseContainer = styled.div`
       color: ${({ theme }) => theme.darkTheme.colors.text};
     }
   }
-  
+
   tr {
     color: ${({ theme }) => theme.lightTheme.colors.text};
 
@@ -55,10 +56,11 @@ const EmptyStateContainer = styled.div`
     margin: 0 0 12px 0;
   }
 
-  h2, h4 {
+  h2,
+  h4 {
     margin: 4px 0 4px 0;
   }
-`
+`;
 
 const spanishLearnerEmptyMessage = `
 ### Welcome to the language coach!
@@ -75,7 +77,7 @@ If it's in English, I'll show you how to say it in Spanish, with dialectic and r
 `;
 
 const englishLearnerEmptyMessage = `
-### Bienvenidos a el entrenedor de idioma!
+### ¡Bienvenidos al entrenador de idiomas!
 
 Puedes ingresar cualquier cosa que quieras en español o inglés, y te ayudaré.
 
@@ -83,34 +85,40 @@ Por ejemplo:
 
 #### Ingresa un verbo
 
-Te diré qué significa y te daré una tabla de conjugación. Si tu verbo está en inglés, te daré algunas opciones sobre cómo decirlo en español.
+Te diré qué significa y te daré una tabla de conjugación. Si tu verbo está en español, te daré algunas opciones sobre cómo decirlo en inglés.
 
 #### Ingresa una frase
-Si está en español, te mostraré cómo decirlo en inglés. Si está en español, te ofreceré correcciones y sugerencias para mejorar.
+Si está en español, te mostraré cómo decirlo en inglés. Si está en inglés, te ofreceré correcciones y sugerencias para mejorar.
 
 `;
 
 const TranslationResponse = ({ translation, languageMode }) => {
-  const [emptyMessage, setEmptyMessage] = useState(languageMode === 'spanishHelp' ? spanishLearnerEmptyMessage : englishLearnerEmptyMessage)
+  const [emptyMessage, setEmptyMessage] = useState(
+    languageMode === "spanishHelp"
+      ? spanishLearnerEmptyMessage
+      : englishLearnerEmptyMessage,
+  );
 
   useEffect(() => {
-    if (languageMode === 'spanishHelp') {
+    if (languageMode === "spanishHelp") {
       setEmptyMessage(spanishLearnerEmptyMessage);
     } else {
       setEmptyMessage(englishLearnerEmptyMessage);
     }
-  }, [languageMode])
+  }, [languageMode]);
 
   return (
     <ResponseContainer>
-      {translation === '' && (
+      {translation === "" && (
         <EmptyStateContainer>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {emptyMessage}
           </ReactMarkdown>
         </EmptyStateContainer>
       )}
-      {translation !== '' && <ReactMarkdown remarkPlugins={[remarkGfm]}>{translation}</ReactMarkdown>}
+      {translation !== "" && (
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{translation}</ReactMarkdown>
+      )}
     </ResponseContainer>
   );
 };

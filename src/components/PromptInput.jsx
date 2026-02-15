@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import IconButton from "./IconButton";
-import Button from "./Button";
 import ModeSwitcher from "./ModeSwitcher";
 import DoubleButton from "./DoubleButton";
 
@@ -181,6 +180,7 @@ const PromptInput = ({
   setLanguageMode,
 }) => {
   const [input, setInput] = useState("");
+  const inputRef = useRef(null);
 
   const handleSubmit = (model) => {
     if (input.trim()) {
@@ -190,10 +190,10 @@ const PromptInput = ({
 
   const handleClear = () => {
     setInput("");
-    document.querySelector("textarea").focus();
+    inputRef.current?.focus();
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit("complete");
@@ -202,7 +202,7 @@ const PromptInput = ({
 
   useEffect(() => {
     handleClear();
-    document.querySelector("textarea").focus();
+    inputRef.current?.focus();
   }, [languageMode]);
 
   return (
@@ -214,9 +214,10 @@ const PromptInput = ({
       <InputWrapper>
         <StyledInput
           value={input}
+          ref={inputRef}
           $inputLength={input.length}
           onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           placeholder={
             languageMode === "spanishHelp"
               ? "I can help you learn Spanish"

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledIconButton = styled.button`
   display: flex;
@@ -15,13 +15,15 @@ const StyledIconButton = styled.button`
   transition: 0.2s ease;
 
   @media (prefers-color-scheme: light) {
-    background-color: ${({ theme }) => theme.lightTheme.colors.backgroundSecondary};
+    background-color: ${({ theme }) =>
+      theme.lightTheme.colors.backgroundSecondary};
     color: ${({ theme }) => theme.lightTheme.colors.text};
     box-shadow: 0 2px 4px ${({ theme }) => theme.lightTheme.colors.shadow};
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: ${({ theme }) => theme.darkTheme.colors.backgroundSecondary};
+    background-color: ${({ theme }) =>
+      theme.darkTheme.colors.backgroundSecondary};
     color: ${({ theme }) => theme.darkTheme.colors.text};
     box-shadow: 0 2px 4px ${({ theme }) => theme.darkTheme.colors.shadow};
   }
@@ -33,19 +35,18 @@ const StyledIconButton = styled.button`
     width: 1.5rem;
     height: 1.5rem;
   }
-  
+
   &:hover {
-    background-color: darken(rgba(0, 0, 0, .25), .25);
+    background-color: rgba(0, 0, 0, 0.05);
   }
 
   &:active {
-    background-color: darken(rgba(0, 0, 0, .25), .25);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-
   }
 `;
 
@@ -60,11 +61,11 @@ const IconButton = ({ icon, onClick, disabled, ...props }) => {
 IconButton.propTypes = {
   icon: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   onClick: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
 };
 
 IconButton.defaultProps = {
-  disabled: false
+  disabled: false,
 };
 
 export default IconButton;
