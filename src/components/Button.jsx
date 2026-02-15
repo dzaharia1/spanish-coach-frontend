@@ -36,7 +36,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ onClick, disabled, children, icon, variant = 'primary', ...props }) => {
+const Button = ({ onClick, disabled, children, icon, variant='primary', ...props }) => {
   return (
     <StyledButton onClick={onClick} disabled={disabled} variant={variant} {...props}>
       {icon && <img src={`/${icon}.svg`} alt="Icon" />}

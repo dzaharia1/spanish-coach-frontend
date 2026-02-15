@@ -71,11 +71,11 @@ For instance:
 I'll tell you what it means and give you a conjugation table. If your verb is in English, I'll give you some options on how to say it in Spanish.
 
 #### Enter a phrase
-If it's in English, I'll show you how to say it in Spanish, with dialectic and regional notes. If it's in Spanish, I'll offer you corrections and suggestions for improvement.
+If it's in English, I'll show you how to say it in Spanish, with dialectic and regional notes. if it's in Spanish, I'll offer you corrections and suggestions for improvement.
 `;
 
 const englishLearnerEmptyMessage = `
-### ¡Bienvenidos al entrenador de idiomas!
+### Bienvenidos a el entrenedor de idioma!
 
 Puedes ingresar cualquier cosa que quieras en español o inglés, y te ayudaré.
 
@@ -86,7 +86,8 @@ Por ejemplo:
 Te diré qué significa y te daré una tabla de conjugación. Si tu verbo está en inglés, te daré algunas opciones sobre cómo decirlo en español.
 
 #### Ingresa una frase
-Si está en español, te mostraré cómo decirlo en inglés. Si está en inglés, te ofreceré correcciones y sugerencias para mejorar.
+Si está en español, te mostraré cómo decirlo en inglés. Si está en español, te ofreceré correcciones y sugerencias para mejorar.
+
 `;
 
 const TranslationResponse = ({ translation, languageMode }) => {

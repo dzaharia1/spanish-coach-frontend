@@ -4,14 +4,13 @@ import styled from 'styled-components';
 import IconButton from './IconButton';
 import Button from './Button';
 import ModeSwitcher from './ModeSwitcher';
-import ModelSelector from './ModelSelector';
 
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: ${({ theme }) => theme.spacing.xSmall};
-  padding: ${({ theme }) => theme.spacing.medium};
+  gap: ${({ theme }) => theme.spacing.medium};
+  padding: ${({ theme }) => theme.spacing.large};
   border-radius: ${({ theme }) => theme.borderRadii.large};
   width: 100%;
 
@@ -78,33 +77,17 @@ const ButtonRow = styled.div`    display: flex;
     align-items: flex-end;
     justify-content: space-between;
     width: 100%;
-    display: flex;
 
     @keyframes pulse {
-      0% { opacity: .35; }
+      0% { opacity: .65; }
       50% { opacity: 1; }
-      100% { opacity: .35; }
+      100% { opacity: .65; }
     }
 
     .loadingIndicator {
-      flex: 1;
-      text-align: left;
-      padding-left: ${({ theme }) => theme.spacing.small};
       font-weight: 700;
       margin: 0;
       animation: pulse .75s ease-in-out infinite;
-
-      @media (min-width: 768px) {
-        text-align: right;
-        flex: unset;
-      }
-    }
-
-    &:first-child {
-      display: none;
-      @media (max-width: 768px) {
-        display: flex;
-      }
     }
 `;
 
@@ -115,28 +98,14 @@ const ButtonGroup = styled.div`
     justify-content: flex-end;
     flex: 1;
     gap: ${({ theme }) => theme.spacing.small};
-
-    &:first-child {
-        display: none;
-
-        @media (min-width: 768px) {
-            display: flex;
-            flex: unset;
-        }
-    }
 `;
 
 const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => {
   const [input, setInput] = useState('');
-  const [model, setModel] = useState(() => {
-    // Load saved model preference from localStorage
-    const savedModel = localStorage.getItem('spanish-coach-model');
-    return savedModel || 'complete';
-  });
 
   const handleSubmit = () => {
     if (input.trim()) {
-      onSubmit(input, model);
+      onSubmit(input);
     }
   };
 
@@ -152,11 +121,6 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
     }
   };
 
-  // Save model preference to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('spanish-coach-model', model);
-  }, [model]);
-
   useEffect(() => {
     handleClear();
     document.querySelector('textarea').focus();
@@ -165,10 +129,6 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
 
   return (
     <InputWrapper>
-      <ButtonRow>
-        <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
-        <ModelSelector model={model} setModel={setModel} languageMode={languageMode} />
-      </ButtonRow>
       <StyledInput
         value={input}
         $inputLength={input.length}
@@ -179,11 +139,8 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
       <ButtonRow>
         <ButtonGroup>
           <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
-          <ModelSelector model={model} setModel={setModel} languageMode={languageMode} />
-        </ButtonGroup>
-        <ButtonGroup>
           {isLoading && (
-            <p className="loadingIndicator">{languageMode === 'spanishHelp' ? 'Thinking ...' : 'Pensando ...'}</p>
+            <p className="loadingIndicator">...</p>
           )}
           <IconButton
             icon="delete"
@@ -192,7 +149,7 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
           <Button
             onClick={handleSubmit}
             disabled={input === "" || isLoading}>
-            {languageMode === 'spanishHelp' ? 'Translate' : 'Traducir'}
+              Translate
           </Button>
         </ButtonGroup>
       </ButtonRow>

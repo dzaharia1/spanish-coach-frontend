@@ -12,7 +12,7 @@ const ModeSwitcherWrapper = styled.div`
 `;
 
 
-const ModeSwitcher = ({ languageMode, setLanguageMode }) => {
+const ModeSwitcher = ({ languageMode, setLanguageMode} ) => {
     const switchLanguage = () => {
         if (languageMode === 'spanishHelp') {
             setLanguageMode('englishHelp');
@@ -23,7 +23,7 @@ const ModeSwitcher = ({ languageMode, setLanguageMode }) => {
 
     return (
         <ModeSwitcherWrapper>
-            <Button onClick={switchLanguage}>
+            <Button onClick={switchLanguage} variant="secondary">
                 {languageMode === 'spanishHelp' ? '🇲🇽' : '🇺🇸'}
             </Button>
         </ModeSwitcherWrapper>
