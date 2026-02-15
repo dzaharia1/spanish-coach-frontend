@@ -26,6 +26,18 @@ const InputWrapper = styled.div`
     color: ${({ theme }) => theme.darkTheme.colors.text};
     box-shadow: 0 2px 4px ${({ theme }) => theme.darkTheme.colors.shadow};
   }
+
+  .clearButton {
+    position: absolute;
+    bottom: calc(100% + ${({ theme }) => theme.spacing.small});
+    right: 0;
+
+    @media (min-width: 768px) {
+      position: relative;
+      bottom: auto;
+      right: auto;
+    }
+  }
 `;
 
 const StyledInput = styled.textarea`
@@ -78,12 +90,67 @@ const ButtonRow = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   width: 100%;
+`;
+
+const ButtonGroup = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  gap: ${({ theme }) => theme.spacing.small};
+`;
+
+const LoadingIndicator = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.large};
+
+  bottom: calc(100% - ${({ theme }) => theme.spacing.large});
+  left: ${({ theme }) => theme.spacing.xLarge};
+  right: ${({ theme }) => theme.spacing.xLarge};
+  transform: ${(props) =>
+    props.active ? "translateY(0)" : "translateY(100%)"};
+  transition: transform 0.2s ease;
+  z-index: -1;
+
+  padding: ${({ theme }) => theme.spacing.small}
+    ${({ theme }) => theme.spacing.large};
+  border-radius: ${({ theme }) => theme.borderRadii.small}
+    ${({ theme }) => theme.borderRadii.small} 0 0;
+
+  @media (prefers-color-scheme: light) {
+    background-color: ${({ theme }) => theme.lightTheme.colors.background};
+    color: ${({ theme }) => theme.lightTheme.colors.text};
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: ${({ theme }) => theme.darkTheme.colors.background};
+    color: ${({ theme }) => theme.darkTheme.colors.text};
+  }
+
+  @media (min-width: 768px) {
+    bottom: unset;
+    top: calc(100% - ${({ theme }) => theme.spacing.large});
+    left: ${({ theme }) => theme.spacing.xLarge};
+    right: ${({ theme }) => theme.spacing.xLarge};
+    transform: ${(props) =>
+      props.active ? "translateY(0)" : "translateY(-100%)"};
+    border-radius: 0 0 ${({ theme }) => theme.borderRadii.small}
+      ${({ theme }) => theme.borderRadii.small};
+  }
 
   @keyframes pulse {
     0% {
       opacity: 0.35;
     }
-    50% {
+    20% {
+      opacity: 1;
+    }
+    80% {
       opacity: 1;
     }
     100% {
@@ -91,20 +158,20 @@ const ButtonRow = styled.div`
     }
   }
 
-  .loadingIndicator {
-    font-weight: 700;
+  .dot {
+    animation: pulse 1.5s infinite;
+    width: ${({ theme }) => theme.spacing.small};
+    height: ${({ theme }) => theme.spacing.small};
+    border-radius: 50%;
     margin: 0;
-    animation: pulse 0.75s ease-in-out infinite;
+    background: linear-gradient(180deg, rgba(95, 70, 252, 0.78), #5f46fc);
   }
-`;
 
-const ButtonGroup = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1;
-  gap: ${({ theme }) => theme.spacing.small};
+  p {
+    animation: pulse 1.5s infinite;
+    text-align: left;
+    margin: 0;
+  }
 `;
 
 const PromptInput = ({
@@ -139,55 +206,52 @@ const PromptInput = ({
   }, [languageMode]);
 
   return (
-    <InputWrapper>
-      <StyledInput
-        value={input}
-        $inputLength={input.length}
-        onChange={(e) => setInput(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder={
-          languageMode === "spanishHelp"
-            ? "I can help you learn Spanish"
-            : "Te ayudo a aprender inglés"
-        }
-      />
-      <ButtonRow>
-        <ButtonGroup>
-          <ModeSwitcher
-            languageMode={languageMode}
-            setLanguageMode={setLanguageMode}
-          />
-          {isLoading && <p className="loadingIndicator">Thinking...</p>}
-          <IconButton
-            icon="delete"
-            onClick={handleClear}
-            disabled={input === "" || isLoading}
-          />
-          <DoubleButton
-            primaryText={languageMode === "spanishHelp" ? "Explain" : "Explica"}
-            secondaryText={
-              languageMode === "spanishHelp" ? "Translate" : "Traduce"
-            }
-            primaryAction={() => handleSubmit("complete")}
-            secondaryAction={() => handleSubmit("concise")}
-            primaryDisabled={input === "" || isLoading}
-            secondaryDisabled={input === "" || isLoading}
-          />
-          {/* <Button
-            onClick={() => handleSubmit("complete")}
-            disabled={input === "" || isLoading}
-          >
-            {languageMode === "spanishHelp" ? "Explain" : "Explique"}
-          </Button>
-          <Button
-            onClick={() => handleSubmit("concise")}
-            disabled={input === "" || isLoading}
-          >
-            {languageMode === "spanishHelp" ? "Translate" : "Traduce"}
-          </Button> */}
-        </ButtonGroup>
-      </ButtonRow>
-    </InputWrapper>
+    <>
+      <LoadingIndicator active={isLoading}>
+        <div className="dot"></div>
+        <p>Thinking</p>
+      </LoadingIndicator>
+      <InputWrapper>
+        <StyledInput
+          value={input}
+          $inputLength={input.length}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder={
+            languageMode === "spanishHelp"
+              ? "I can help you learn Spanish"
+              : "Te ayudo a aprender inglés"
+          }
+        />
+        <ButtonRow>
+          <ButtonGroup>
+            <ModeSwitcher
+              languageMode={languageMode}
+              setLanguageMode={setLanguageMode}
+            />
+            {/* {isLoading && <p className="loadingIndicator">Thinking...</p>} */}
+            <IconButton
+              className="clearButton"
+              icon="delete"
+              onClick={handleClear}
+              disabled={input === "" || isLoading}
+            />
+            <DoubleButton
+              primaryText={
+                languageMode === "spanishHelp" ? "Explain" : "Explica"
+              }
+              secondaryText={
+                languageMode === "spanishHelp" ? "Translate" : "Traduce"
+              }
+              primaryAction={() => handleSubmit("complete")}
+              secondaryAction={() => handleSubmit("concise")}
+              primaryDisabled={input === "" || isLoading}
+              secondaryDisabled={input === "" || isLoading}
+            />
+          </ButtonGroup>
+        </ButtonRow>
+      </InputWrapper>
+    </>
   );
 };
 

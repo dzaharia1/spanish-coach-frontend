@@ -8,11 +8,11 @@ const DoubleButtonContainer = styled.div`
   gap: ${({ theme }) => theme.spacing.xSmall};
 
   button:first-child {
-    border-radius: 15px 5px 5px 15px;
+    border-radius: 12px 6px 6px 12px;
   }
 
   button:last-child {
-    border-radius: 5px 15px 15px 5px;
+    border-radius: 6px 12px 12px 6px;
   }
 `;
 

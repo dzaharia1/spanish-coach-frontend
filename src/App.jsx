@@ -20,6 +20,8 @@ const AppContainer = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
+
   padding: ${({ theme }) => theme.spacing.large};
   z-index: 100;
 
