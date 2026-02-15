@@ -7,7 +7,7 @@ const ModeSwitcherWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-//   flex: 1;
+  flex: 1;
   gap: ${({ theme }) => theme.spacing.small};
 `;
 
@@ -23,7 +23,7 @@ const ModeSwitcher = ({ languageMode, setLanguageMode }) => {
 
     return (
         <ModeSwitcherWrapper>
-            <Button onClick={switchLanguage} variant="secondary">
+            <Button onClick={switchLanguage}>
                 {languageMode === 'spanishHelp' ? '🇲🇽' : '🇺🇸'}
             </Button>
         </ModeSwitcherWrapper>

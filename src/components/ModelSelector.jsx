@@ -7,41 +7,42 @@ const Wrapper = styled.div`
   position: relative;
   display: inline-block;
   font-family: inherit;
-  flex: 1;
 `;
 
 const ToggleButton = styled.button`
-  appearance: none;
-  background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.lightTheme?.colors?.border || '#ccc'};
-  border-radius: ${({ theme }) => theme.borderRadii?.medium || '8px'};
-  padding: ${({ theme }) => theme.spacing?.small || '8px'} ${({ theme }) => theme.spacing?.medium || '16px'};
+  padding: 10px 24px;
   padding-right: 2.5rem;
   font-size: 1rem;
   font-family: inherit;
+  border: none;
+  border-radius: 15px;
+  font-weight: 700;
   cursor: pointer;
   outline: none;
-  color: inherit;
   display: flex;
   align-items: center;
   min-width: 120px;
   position: relative;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 
   @media (prefers-color-scheme: light) {
-    color: ${({ theme }) => theme.lightTheme?.colors?.text || '#000'};
-    border-color: ${({ theme }) => theme.lightTheme?.colors?.border || '#ccc'};
-    background-color: ${({ theme }) => theme.lightTheme?.colors?.backgroundSecondary || '#f5f5f5'};
+    background: white;
+    color: black;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
   @media (prefers-color-scheme: dark) {
-    color: ${({ theme }) => theme.darkTheme?.colors?.text || '#fff'};
-    border-color: ${({ theme }) => theme.darkTheme?.colors?.border || '#555'};
-    background-color: ${({ theme }) => theme.darkTheme?.colors?.backgroundSecondary || '#333'};
+    background: ${({ theme }) => theme.darkTheme.colors.backgroundSecondary};
+    color: ${({ theme }) => theme.darkTheme.colors.text};
+    box-shadow: 0 2px 8px ${({ theme }) => theme.darkTheme.colors.shadow};
   }
 
   &:hover {
-    opacity: 0.9;
+    outline: none;
+  }
+
+  &:active {
+    outline: none;
   }
 `;
 
@@ -57,10 +58,10 @@ const Arrow = styled.span`
 
 const DropdownMenu = styled.div`
   position: absolute;
-  bottom: 100%;
+  top: 100%;
   left: 0;
   width: 300px; /* Fixed width for the rich content */
-  margin-bottom: 8px;
+  margin-top: 8px;
   border-radius: ${({ theme }) => theme.borderRadii?.medium || '8px'};
   overflow: hidden;
   z-index: 1000;
@@ -76,13 +77,23 @@ const DropdownMenu = styled.div`
     background-color: ${({ theme }) => theme.darkTheme?.colors?.background || '#222'};
     border: 1px solid ${({ theme }) => theme.darkTheme?.colors?.border || '#444'};
   }
+
+  @media (max-width: 768px) {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 8px;
+    left: unset;
+    right: 0;
+  }
 `;
 
 const MenuItem = styled.div`
-  padding: 12px;
+  padding: 6px 12px;
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s;
+  text-align: left;
   background-color: ${({ $isSelected, theme }) =>
     $isSelected
       ? (theme.lightTheme ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.1)')
@@ -93,7 +104,7 @@ const MenuItem = styled.div`
   }
 
   h3 {
-    margin: 0 0 4px 0;
+    margin: 0 0 0px 0;
     font-size: 1rem;
     font-weight: 600;
   }
@@ -114,17 +125,17 @@ const ModelSelector = ({ model, setModel, languageMode }) => {
   const options = [
     {
       value: 'complete',
-      label: isSpanish ? 'Completo' : 'Complete',
+      label: isSpanish ? 'Complete' : 'Completo',
       description: isSpanish
-        ? 'Dame una lección breve sobre mi entrada, con notas culturales y gramaticales'
-        : 'Give me a short lesson around my input, with cultural and grammatical notes'
+        ? 'Give me a short lesson around my input, with cultural and grammatical notes'
+        : 'Dame una lección breve sobre mi entrada, con notas culturales y gramaticales'
     },
     {
       value: 'concise',
-      label: isSpanish ? 'Conciso' : 'Concise',
+      label: isSpanish ? 'Concise' : 'Conciso',
       description: isSpanish
-        ? 'Simplemente traduce rápido mi inglés y corrige mi español'
-        : 'Just quickly translate my english and proofread my Spanish'
+        ? 'Just quickly translate my english and proofread my Spanish'
+        : 'Simplemente traduce rápido mi inglés y corrige mi español'
     }
   ];
 

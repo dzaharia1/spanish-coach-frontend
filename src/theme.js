@@ -18,9 +18,10 @@ export const darkTheme = {
     placeholder: '#666',
     shadow: 'rgba(0, 0, 0, 0.5)',
   }
-}; 
+};
 
 export const spacing = {
+  xSmall: '0.25rem',
   small: '0.5rem',
   medium: '0.75rem',
   large: '1rem',

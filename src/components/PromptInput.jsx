@@ -10,8 +10,8 @@ const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: ${({ theme }) => theme.spacing.medium};
-  padding: ${({ theme }) => theme.spacing.large};
+  gap: ${({ theme }) => theme.spacing.xSmall};
+  padding: ${({ theme }) => theme.spacing.medium};
   border-radius: ${({ theme }) => theme.borderRadii.large};
   width: 100%;
 
@@ -78,17 +78,33 @@ const ButtonRow = styled.div`    display: flex;
     align-items: flex-end;
     justify-content: space-between;
     width: 100%;
+    display: flex;
 
     @keyframes pulse {
-      0% { opacity: .65; }
+      0% { opacity: .35; }
       50% { opacity: 1; }
-      100% { opacity: .65; }
+      100% { opacity: .35; }
     }
 
     .loadingIndicator {
+      flex: 1;
+      text-align: left;
+      padding-left: ${({ theme }) => theme.spacing.small};
       font-weight: 700;
       margin: 0;
       animation: pulse .75s ease-in-out infinite;
+
+      @media (min-width: 768px) {
+        text-align: right;
+        flex: unset;
+      }
+    }
+
+    &:first-child {
+      display: none;
+      @media (max-width: 768px) {
+        display: flex;
+      }
     }
 `;
 
@@ -99,6 +115,15 @@ const ButtonGroup = styled.div`
     justify-content: flex-end;
     flex: 1;
     gap: ${({ theme }) => theme.spacing.small};
+
+    &:first-child {
+        display: none;
+
+        @media (min-width: 768px) {
+            display: flex;
+            flex: unset;
+        }
+    }
 `;
 
 const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => {
@@ -131,6 +156,10 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
 
   return (
     <InputWrapper>
+      <ButtonRow>
+        <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
+        <ModelSelector model={model} setModel={setModel} languageMode={languageMode} />
+      </ButtonRow>
       <StyledInput
         value={input}
         $inputLength={input.length}
@@ -142,6 +171,8 @@ const PromptInput = ({ onSubmit, isLoading, languageMode, setLanguageMode }) => 
         <ButtonGroup>
           <ModeSwitcher languageMode={languageMode} setLanguageMode={setLanguageMode} />
           <ModelSelector model={model} setModel={setModel} languageMode={languageMode} />
+        </ButtonGroup>
+        <ButtonGroup>
           {isLoading && (
             <p className="loadingIndicator">Thinking ...</p>
           )}
