@@ -43,11 +43,13 @@ const StyledLoadingIndicator = styled.div`
   @media (prefers-color-scheme: light) {
     background-color: ${({ theme }) => theme.lightTheme.colors.background};
     color: ${({ theme }) => theme.lightTheme.colors.text};
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   @media (prefers-color-scheme: dark) {
     background-color: ${({ theme }) => theme.darkTheme.colors.background};
     color: ${({ theme }) => theme.darkTheme.colors.text};
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   @media (min-width: 768px) {
