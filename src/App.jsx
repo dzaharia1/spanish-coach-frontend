@@ -79,7 +79,6 @@ function App() {
   const handleSubmit = async (text, model) => {
     try {
       setIsLoading(true);
-      setTranslation(""); // Clear previous translation
 
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
@@ -106,6 +105,7 @@ function App() {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let isFirstChunk = true;
 
       while (true) {
         const { value, done } = await reader.read();
@@ -116,13 +116,26 @@ function App() {
 
         for (const line of lines) {
           if (line.startsWith("data: ")) {
-            const data = JSON.parse(line.slice(6));
-            if (data.text) {
-              setTranslation((prev) => prev + data.text);
-            }
-            if (data.error) {
-              console.error(data.error);
-              setTranslation("Error: " + data.error);
+            try {
+              const data = JSON.parse(line.slice(6));
+
+              if (isFirstChunk && (data.text || data.error)) {
+                let content = "";
+                if (data.text) content += data.text;
+                if (data.error) content += "Error: " + data.error;
+                setTranslation(content);
+                isFirstChunk = false;
+              } else {
+                if (data.text) {
+                  setTranslation((prev) => prev + data.text);
+                }
+                if (data.error) {
+                  console.error(data.error);
+                  setTranslation((prev) => prev + "Error: " + data.error);
+                }
+              }
+            } catch (e) {
+              console.error("Error parsing SSE data:", e);
             }
           }
         }
