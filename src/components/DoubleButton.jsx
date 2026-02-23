@@ -18,6 +18,8 @@ const DoubleButtonContainer = styled.div`
 const DoubleButton = ({
   primaryText,
   secondaryText,
+  primaryToolTip,
+  secondaryToolTip,
   primaryAction,
   secondaryAction,
   primaryDisabled,
@@ -29,6 +31,7 @@ const DoubleButton = ({
         variant="primary"
         onClick={primaryAction}
         disabled={primaryDisabled}
+        toolTipText={primaryToolTip}
       >
         {primaryText}
       </Button>
@@ -36,6 +39,7 @@ const DoubleButton = ({
         variant="primary"
         onClick={secondaryAction}
         disabled={secondaryDisabled}
+        toolTipText={secondaryToolTip}
       >
         {secondaryText}
       </Button>
@@ -46,6 +50,8 @@ const DoubleButton = ({
 DoubleButton.propTypes = {
   primaryText: PropTypes.string.isRequired,
   secondaryText: PropTypes.string.isRequired,
+  primaryToolTip: PropTypes.string,
+  secondaryToolTip: PropTypes.string,
   primaryAction: PropTypes.func.isRequired,
   secondaryAction: PropTypes.func.isRequired,
   primaryDisabled: PropTypes.bool,

@@ -126,13 +126,13 @@ const PromptInput = ({
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit("complete");
-    }
-    if (e.key === "Enter" && e.shiftKey) {
+    if (e.key === "Enter" && !(e.metaKey || e.ctrlKey)) {
       e.preventDefault();
       handleSubmit("concise");
+    }
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      handleSubmit("complete");
     }
   };
 
@@ -188,6 +188,16 @@ const PromptInput = ({
               }
               secondaryText={
                 languageMode === "spanishHelp" ? "Translate" : "Traduce"
+              }
+              primaryToolTip={
+                languageMode === "spanishHelp"
+                  ? "[ctrl/cmd + enter] Explore the topic in depth"
+                  : "[ctrl/cmd + enter] Explora el tema en profundidad"
+              }
+              secondaryToolTip={
+                languageMode === "spanishHelp"
+                  ? "[enter] Get a concise translation"
+                  : "[enter] Obtén una traducción concisa"
               }
               primaryAction={() => handleSubmit("complete")}
               secondaryAction={() => handleSubmit("concise")}

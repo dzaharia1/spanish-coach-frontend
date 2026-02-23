@@ -6,6 +6,7 @@ export const lightTheme = {
     inputBackground: 'transparent',
     placeholder: '#999',
     shadow: 'rgba(0, 0, 0, 0.38)',
+    border: 'rgba(236, 236, 236, 1)',
   }
 };
 
@@ -17,6 +18,7 @@ export const darkTheme = {
     inputBackground: 'transparent',
     placeholder: '#666',
     shadow: 'rgba(0, 0, 0, 0.5)',
+    border: '#2f2e2eff',
   }
 }; 
 
