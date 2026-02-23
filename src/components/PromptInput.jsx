@@ -184,15 +184,15 @@ const PromptInput = ({
             />
             <DoubleButton
               primaryText={
-                languageMode === "spanishHelp" ? "Explore" : "Explora"
+                languageMode === "spanishHelp" ? "Explain" : "Explica"
               }
               secondaryText={
                 languageMode === "spanishHelp" ? "Translate" : "Traduce"
               }
               primaryToolTip={
                 languageMode === "spanishHelp"
-                  ? "[ctrl/cmd + enter] Explore the topic in depth"
-                  : "[ctrl/cmd + enter] Explora el tema en profundidad"
+                  ? "[ctrl/cmd + enter] Explain the topic in depth"
+                  : "[ctrl/cmd + enter] Explica el tema en profundidad"
               }
               secondaryToolTip={
                 languageMode === "spanishHelp"
