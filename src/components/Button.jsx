@@ -80,7 +80,7 @@ const ToolTip = styled.div`
     border: 1px solid ${({ theme }) => theme.darkTheme.colors.border};
   }
 
-  @media (max-width: 768px) {
+  @media (hover: none) and (pointer: coarse) {
     display: none !important;
   }
 `;
