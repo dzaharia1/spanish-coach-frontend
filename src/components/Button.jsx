@@ -1,8 +1,16 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const StyledButton = styled.button`
+const ButtonWrapper = styled.div`
   position: relative;
+  display: inline-flex;
+
+  &:hover .toolTip {
+    display: block;
+  }
+`;
+
+const StyledButton = styled.button`
   padding: 10px 24px;
   font-size: 1rem;
   border: none;
@@ -31,9 +39,6 @@ const StyledButton = styled.button`
     background-color: ${({ variant }) =>
       variant === "primary" ? "rgb(67, 41, 233)" : "white"};
     outline: none;
-    .toolTip {
-      display: block;
-    }
   }
 
   &:active {
@@ -59,7 +64,6 @@ const ToolTip = styled.div`
 
   padding: ${({ theme }) => theme.spacing.small};
   border-radius: 12px;
-  opacity: 1;
 
   font-size: 0.8rem;
   text-align: left;
@@ -75,6 +79,10 @@ const ToolTip = styled.div`
     color: ${({ theme }) => theme.darkTheme.colors.text};
     border: 1px solid ${({ theme }) => theme.darkTheme.colors.border};
   }
+
+  @media (max-width: 768px) {
+    display: none !important;
+  }
 `;
 
 const Button = ({
@@ -87,16 +95,18 @@ const Button = ({
   ...props
 }) => {
   return (
-    <StyledButton
-      onClick={onClick}
-      disabled={disabled}
-      variant={variant}
-      {...props}
-    >
-      {icon && <img src={`/${icon}.svg`} alt="Icon" />}
-      {children}
+    <ButtonWrapper>
+      <StyledButton
+        onClick={onClick}
+        disabled={disabled}
+        variant={variant}
+        {...props}
+      >
+        {icon && <img src={`/${icon}.svg`} alt="Icon" />}
+        {children}
+      </StyledButton>
       {toolTipText && <ToolTip className="toolTip">{toolTipText}</ToolTip>}
-    </StyledButton>
+    </ButtonWrapper>
   );
 };
 
