@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview --host",
-    "start": "vite preview --host"
+    "start": "vite preview --host",
+    "deploy": "git push origin main && sleep 6 && gh run watch $(gh run list --limit 1 --json databaseId --jq '.[0].databaseId')"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
