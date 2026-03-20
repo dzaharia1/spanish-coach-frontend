@@ -9,7 +9,7 @@ import { lightTheme, darkTheme, spacing, borderRadii } from "./theme";
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   padding: ${({ theme }) => theme.spacing.large} 0;
 
