@@ -2,9 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PromptInput from "./components/PromptInput";
 import TranslationResponse from "./components/TranslationResponse";
+import LoginScreen from "./components/LoginScreen";
+import HistoryModal from "./components/HistoryModal";
 import "./App.css";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, spacing, borderRadii } from "./theme";
+import { useAuth } from "./auth/AuthContext";
 
 const AppContainer = styled.div`
   display: flex;
@@ -57,8 +60,10 @@ const theme = {
 const routes = ["spanishHelp", "englishHelp"];
 
 function App() {
+  const { user, loading: authLoading, getIdToken, signOut } = useAuth();
   const [translation, setTranslation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [languageMode, setLanguageMode] = useState(
     localStorage.getItem("languageMode") || routes[0],
   );
@@ -84,19 +89,19 @@ function App() {
       const signal = abortControllerRef.current.signal;
 
       const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/${languageMode}`;
-      console.log("Making request to:", apiUrl); // Add debugging
+
+      const headers = { "Content-Type": "application/json" };
+      const idToken = await getIdToken();
+      if (idToken) headers.Authorization = `Bearer ${idToken}`;
 
       const response = await fetch(apiUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers,
         body: JSON.stringify({ text, model }),
         signal,
       });
 
       if (!response.ok) {
-        // Add error handling for non-200 responses
         const errorText = await response.text();
         throw new Error(
           `HTTP error! status: ${response.status}, body: ${errorText}`,
@@ -141,9 +146,7 @@ function App() {
         }
       }
     } catch (error) {
-      if (error.name === "AbortError") {
-        console.log("Fetch aborted");
-      } else {
+      if (error.name !== "AbortError") {
         console.error("Error:", error);
         setTranslation("Error occurred while translating");
       }
@@ -152,6 +155,8 @@ function App() {
       abortControllerRef.current = null;
     }
   };
+
+  const showLoginScreen = !authLoading && !user && !translation && !isLoading;
 
   return (
     <ThemeProvider theme={theme}>
@@ -163,14 +168,26 @@ function App() {
             isLoading={isLoading}
             languageMode={languageMode}
             setLanguageMode={setLanguageMode}
+            user={user}
+            onOpenHistory={() => setHistoryOpen(true)}
+            onSignOut={signOut}
           />
         </Header>
         <ContentArea>
-          <TranslationResponse
-            translation={translation}
-            languageMode={languageMode}
-          />
+          {showLoginScreen ? (
+            <LoginScreen languageMode={languageMode} />
+          ) : (
+            <TranslationResponse
+              translation={translation}
+              languageMode={languageMode}
+            />
+          )}
         </ContentArea>
+        <HistoryModal
+          open={historyOpen}
+          onClose={() => setHistoryOpen(false)}
+          user={user}
+        />
       </AppContainer>
     </ThemeProvider>
   );

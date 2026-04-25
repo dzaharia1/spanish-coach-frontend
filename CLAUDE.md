@@ -19,6 +19,7 @@ The frontend communicates with a separate backend service via Server-Sent Events
 | Styling | styled-components 6 |
 | Markdown rendering | react-markdown 9 + remark-gfm 4 |
 | Prop validation | prop-types 15 |
+| Auth | Firebase 12 (web SDK, Google sign-in) |
 | PWA | vite-plugin-pwa 0.21 |
 | Linting | ESLint 9 (flat config) |
 
@@ -44,8 +45,12 @@ npm start         # Alias for npm run preview
 |---|---|---|
 | `VITE_API_URL` | `http://localhost:3000` | Base URL of the backend API |
 | `VITE_PORT` | `3001` | Port for the Vite dev/preview server |
+| `VITE_FIREBASE_API_KEY` | _none_ | Firebase web SDK API key (from Firebase console) |
+| `VITE_FIREBASE_AUTH_DOMAIN` | _none_ | Firebase auth domain, e.g. `your-project.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | _none_ | Firebase project ID |
+| `VITE_FIREBASE_APP_ID` | _none_ | Firebase web app ID |
 
-Set these in a `.env` file at the project root (not committed to git).
+Set these in a `.env` file at the project root (not committed to git). Firebase keys are required for authentication and translation history to work.
 
 ---
 
@@ -56,17 +61,25 @@ spanish-coach-frontend/
 ├── src/
 │   ├── App.jsx              # Root component — state, API calls, layout
 │   ├── App.css              # Global app-level CSS
-│   ├── main.jsx             # React entry point
+│   ├── main.jsx             # React entry point (wraps app in <AuthProvider>)
 │   ├── index.css            # Global CSS variables, font, resets
 │   ├── theme.js             # Shared theme tokens (colors, spacing, radii)
+│   ├── firebase.js          # Firebase web SDK init + Google provider helpers
+│   ├── auth/
+│   │   └── AuthContext.jsx  # Auth context: user, signInWithGoogle, signOut, getIdToken
+│   ├── api/
+│   │   └── history.js       # Authenticated fetch helpers for /history endpoints
 │   └── components/
-│       ├── PromptInput.jsx      # Text input area + button row
+│       ├── PromptInput.jsx      # Text input area + button row + history button
 │       ├── TranslationResponse.jsx # Markdown response display
 │       ├── DoubleButton.jsx     # Two-action button (Explore / Translate)
 │       ├── Button.jsx           # Reusable button (primary/secondary variants)
 │       ├── IconButton.jsx       # Icon-only button (delete, stop)
 │       ├── ModeSwitcher.jsx     # Language mode toggle (🇲🇽 / 🇺🇸)
-│       └── LoadingIndicator.jsx # Animated loading state with stop action
+│       ├── LoadingIndicator.jsx # Animated loading state with stop action
+│       ├── LoginScreen.jsx      # Empty-state log in / register CTA (Google)
+│       ├── HistoryModal.jsx     # Searchable list of saved translations
+│       └── UserMenu.jsx         # Avatar + sign-out menu
 ├── public/                  # Static assets (icons, PWA screenshots, SVGs)
 ├── index.html               # HTML entry point
 ├── vite.config.js           # Vite + PWA configuration
@@ -108,6 +121,14 @@ Each submission includes a `model` field (`"concise"` or `"complete"`):
 The backend returns SSE-formatted responses. The client reads the stream with a `ReadableStream` reader and parses lines matching `data: {json}`. Each chunk has the shape `{ text?, error? }`. The first chunk clears the previous response; subsequent chunks are appended.
 
 Request cancellation uses `AbortController`, stored in a ref (`abortControllerRef`) so `handleStop()` can abort mid-stream.
+
+### Authentication & History
+
+The app uses **Firebase Authentication** with Google as the only sign-in provider (configured in `src/firebase.js`). Auth state lives in `AuthContext` (`src/auth/AuthContext.jsx`) and exposes `user`, `signInWithGoogle`, `signOut`, and `getIdToken`.
+
+When a user is signed in, `App.handleSubmit()` attaches `Authorization: Bearer <ID token>` to every coaching request, which causes the backend to persist the resulting translation under that user.
+
+The empty-state UI shows `<LoginScreen>` (log in / register buttons that both call `signInWithGoogle`) until the user signs in or generates a translation. Once signed in, `<PromptInput>` shows a "History" button that opens `<HistoryModal>` — a searchable list backed by `GET /history`. Clicking a row reveals the full translation. Deletion is exposed only on the backend (`DELETE /history/:id`) for now.
 
 ---
 
