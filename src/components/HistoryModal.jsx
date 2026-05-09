@@ -62,7 +62,8 @@ const CloseButton = styled.button`
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.xSmall} ${({ theme }) => theme.spacing.small};
+  padding: ${({ theme }) => theme.spacing.xSmall}
+    ${({ theme }) => theme.spacing.small};
 
   @media (prefers-color-scheme: light) {
     color: ${({ theme }) => theme.lightTheme.colors.text};
@@ -73,12 +74,14 @@ const CloseButton = styled.button`
 `;
 
 const SearchRow = styled.div`
-  padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.large};
+  padding: ${({ theme }) => theme.spacing.medium}
+    ${({ theme }) => theme.spacing.large};
 `;
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.medium};
+  padding: ${({ theme }) => theme.spacing.small}
+    ${({ theme }) => theme.spacing.medium};
   border-radius: ${({ theme }) => theme.borderRadii.medium};
   border: 1px solid;
   font-size: 0.95rem;
@@ -105,11 +108,13 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
-  padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.large};
+  padding: ${({ theme }) => theme.spacing.medium}
+    ${({ theme }) => theme.spacing.large};
   cursor: pointer;
   border-bottom: 1px solid;
   display: flex;
   flex-direction: column;
+  text-align: left;
   gap: ${({ theme }) => theme.spacing.xSmall};
 
   @media (prefers-color-scheme: light) {
@@ -156,7 +161,8 @@ const Detail = styled.div`
 `;
 
 const DetailHeader = styled.div`
-  padding: ${({ theme }) => theme.spacing.medium} ${({ theme }) => theme.spacing.large};
+  padding: ${({ theme }) => theme.spacing.medium}
+    ${({ theme }) => theme.spacing.large};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
@@ -175,7 +181,8 @@ const BackButton = styled.button`
   background: transparent;
   cursor: pointer;
   font-size: 0.95rem;
-  padding: ${({ theme }) => theme.spacing.xSmall} ${({ theme }) => theme.spacing.small};
+  padding: ${({ theme }) => theme.spacing.xSmall}
+    ${({ theme }) => theme.spacing.small};
 
   @media (prefers-color-scheme: light) {
     color: ${({ theme }) => theme.lightTheme.colors.text};
@@ -189,6 +196,7 @@ const DetailBody = styled.div`
   flex: 1;
   overflow-y: auto;
   padding: ${({ theme }) => theme.spacing.large};
+  text-align: left;
 `;
 
 const InputBlock = styled.div`
@@ -244,7 +252,8 @@ const HistoryModal = ({ open, onClose, user }) => {
     const q = search.trim().toLowerCase();
     if (!q) return items;
     return items.filter((t) => {
-      const haystack = `${t.inputText || ""}\n${t.outputText || ""}`.toLowerCase();
+      const haystack =
+        `${t.inputText || ""}\n${t.outputText || ""}`.toLowerCase();
       return haystack.includes(q);
     });
   }, [items, search]);
@@ -256,7 +265,9 @@ const HistoryModal = ({ open, onClose, user }) => {
       <Panel onClick={(e) => e.stopPropagation()}>
         <Header>
           <Title>History</Title>
-          <CloseButton onClick={onClose} aria-label="Close">×</CloseButton>
+          <CloseButton onClick={onClose} aria-label="Close">
+            ×
+          </CloseButton>
         </Header>
 
         {selected ? (
@@ -292,7 +303,9 @@ const HistoryModal = ({ open, onClose, user }) => {
                   <Item key={t.id} onClick={() => setSelected(t)}>
                     <ItemInput>{t.inputText}</ItemInput>
                     <ItemMeta>
-                      {formatDate(t.createdAt)} · {t.languageMode === "spanishHelp" ? "EN→ES" : "ES→EN"} · {t.model}
+                      {formatDate(t.createdAt)} ·{" "}
+                      {t.languageMode === "spanishHelp" ? "EN→ES" : "ES→EN"} ·{" "}
+                      {t.model}
                     </ItemMeta>
                   </Item>
                 ))}
