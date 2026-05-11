@@ -5,7 +5,7 @@ import LoadingIndicator from "./LoadingIndicator";
 import ModeSwitcher from "./ModeSwitcher";
 import DoubleButton from "./DoubleButton";
 import IconButton from "./IconButton";
-import UserMenu from "./UserMenu";
+import TopBar from "./TopBar";
 
 const InputWrapper = styled.div`
   display: flex;
@@ -103,46 +103,6 @@ const ButtonGroup = styled.div`
   gap: ${({ theme }) => theme.spacing.small};
 `;
 
-const TopBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: ${({ theme }) => theme.spacing.small};
-`;
-
-const HistoryButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing.xSmall};
-  padding: ${({ theme }) => theme.spacing.xSmall}
-    ${({ theme }) => theme.spacing.medium};
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: ${({ theme }) => theme.borderRadii.medium};
-  border: 1px solid;
-  cursor: pointer;
-  background: transparent;
-
-  @media (prefers-color-scheme: light) {
-    color: ${({ theme }) => theme.lightTheme.colors.text};
-    border-color: ${({ theme }) => theme.lightTheme.colors.border};
-  }
-  @media (prefers-color-scheme: dark) {
-    color: ${({ theme }) => theme.darkTheme.colors.text};
-    border-color: ${({ theme }) => theme.darkTheme.colors.border};
-  }
-
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
-
-  img {
-    width: 1.1rem;
-    height: 1.1rem;
-  }
-`;
-
 const PromptInput = ({
   onSubmit,
   onStop,
@@ -201,15 +161,12 @@ const PromptInput = ({
         }
       />
       <InputWrapper>
-        {user && (
-          <TopBar>
-            <HistoryButton type="button" onClick={onOpenHistory}>
-              <img src="/history.svg" alt="" />
-              {languageMode === "spanishHelp" ? "History" : "Historial"}
-            </HistoryButton>
-            <UserMenu user={user} onSignOut={onSignOut} />
-          </TopBar>
-        )}
+        <TopBar
+          user={user}
+          onOpenHistory={onOpenHistory}
+          onSignOut={onSignOut}
+          languageMode={languageMode}
+        />
         <StyledInput
           value={input}
           ref={inputRef}
