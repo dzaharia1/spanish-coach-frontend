@@ -8,6 +8,18 @@
     <meta name="theme-color" content="#FCFCFD" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1A1A1A" media="(prefers-color-scheme: dark)">
     <meta name="description" content="Your personal Spanish language learning assistant">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Le1h-QsAAAAANhZq1OJYXGe3uP2RRpi8TUQbKlp"></script>
+    <script>
+      function executeRecaptcha(actionName = 'LOGIN') {
+        return new Promise((resolve) => {
+          grecaptcha.enterprise.ready(async () => {
+            const token = await grecaptcha.enterprise.execute('6Le1h-QsAAAAANhZq1OJYXGe3uP2RRpi8TUQbKlp', {action: actionName});
+            resolve(token);
+            console.log('token', token);
+          });
+        });
+      }
+    </script>
     <title>Entrenador de español</title>
   </head>
   <body>

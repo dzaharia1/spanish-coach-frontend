@@ -115,7 +115,8 @@ const HistoryButton = styled.button`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.xSmall};
-  padding: ${({ theme }) => theme.spacing.xSmall} ${({ theme }) => theme.spacing.medium};
+  padding: ${({ theme }) => theme.spacing.xSmall}
+    ${({ theme }) => theme.spacing.medium};
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: ${({ theme }) => theme.borderRadii.medium};
@@ -251,8 +252,14 @@ const PromptInput = ({
                   ? "[enter] Get a concise translation"
                   : "[enter] Obtén una traducción concisa"
               }
-              primaryAction={() => handleSubmit("complete")}
-              secondaryAction={() => handleSubmit("concise")}
+              primaryAction={(e) => {
+                if (e) e.preventDefault();
+                handleSubmit("complete");
+              }}
+              secondaryAction={(e) => {
+                if (e) e.preventDefault();
+                handleSubmit("concise");
+              }}
               primaryDisabled={input === "" || isLoading}
               secondaryDisabled={input === "" || isLoading}
             />

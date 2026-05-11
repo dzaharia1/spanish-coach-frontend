@@ -16,18 +16,18 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 12px;
 
-  background: ${({ variant }) =>
-    variant === "primary"
+  background: ${({ $variant }) =>
+    $variant === "primary"
       ? "linear-gradient(180deg, rgba(95, 70, 252, 0.78), #5F46FC)"
       : "white"};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.38);
-  box-shadow: ${({ variant }) =>
-    variant === "primary"
+  box-shadow: ${({ $variant }) =>
+    $variant === "primary"
       ? "0 4px 12px rgba(0, 0, 0, 0.4)"
       : "0 2px 8px rgba(0, 0, 0, 0.2)"};
   font-weight: 700;
   color: white;
-  color: ${({ variant }) => (variant === "primary" ? "white" : "black")};
+  color: ${({ $variant }) => ($variant === "primary" ? "white" : "black")};
   transition: background-color 0.2s ease;
 
   img {
@@ -36,8 +36,8 @@ const StyledButton = styled.button`
   }
 
   &:hover {
-    background-color: ${({ variant }) =>
-      variant === "primary" ? "rgb(67, 41, 233)" : "white"};
+    background-color: ${({ $variant }) =>
+      $variant === "primary" ? "rgb(67, 41, 233)" : "white"};
     outline: none;
   }
 
@@ -99,7 +99,7 @@ const Button = ({
       <StyledButton
         onClick={onClick}
         disabled={disabled}
-        variant={variant}
+        $variant={variant}
         {...props}
       >
         {icon && <img src={`/${icon}.svg`} alt="Icon" />}

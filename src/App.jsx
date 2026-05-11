@@ -85,6 +85,9 @@ function App() {
     try {
       setIsLoading(true);
 
+      // Generate recaptcha token
+      const recaptchaToken = await window.executeRecaptcha?.("TRANSLATE");
+
       abortControllerRef.current = new AbortController();
       const signal = abortControllerRef.current.signal;
 
@@ -97,7 +100,7 @@ function App() {
       const response = await fetch(apiUrl, {
         method: "POST",
         headers,
-        body: JSON.stringify({ text, model }),
+        body: JSON.stringify({ text, model, recaptchaToken }),
         signal,
       });
 
@@ -156,6 +159,11 @@ function App() {
     }
   };
 
+  const handleSignOut = async () => {
+    await window.executeRecaptcha?.("LOGOUT");
+    await signOut();
+  };
+
   const showLoginScreen = !authLoading && !user && !translation && !isLoading;
 
   return (
@@ -170,7 +178,7 @@ function App() {
             setLanguageMode={setLanguageMode}
             user={user}
             onOpenHistory={() => setHistoryOpen(true)}
-            onSignOut={signOut}
+            onSignOut={handleSignOut}
           />
         </Header>
         <ContentArea>

@@ -103,6 +103,7 @@ const LoginScreen = ({ languageMode }) => {
     setBusy(true);
     setError(null);
     try {
+      await window.executeRecaptcha?.("LOGIN");
       await signInWithGoogle();
     } catch (err) {
       if (err.code !== "auth/popup-closed-by-user") {
