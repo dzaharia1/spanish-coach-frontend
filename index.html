@@ -15,7 +15,6 @@
           grecaptcha.enterprise.ready(async () => {
             const token = await grecaptcha.enterprise.execute('6Le1h-QsAAAAANhZq1OJYXGe3uP2RRpi8TUQbKlp', {action: actionName});
             resolve(token);
-            console.log('token', token);
           });
         });
       }
