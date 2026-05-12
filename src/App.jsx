@@ -8,6 +8,7 @@ import "./App.css";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme, spacing, borderRadii } from "./theme";
 import { useAuth } from "./auth/AuthContext";
+import { auditRecaptcha } from "./api/recaptcha";
 
 const AppContainer = styled.div`
   display: flex;
@@ -160,7 +161,8 @@ function App() {
   };
 
   const handleSignOut = async () => {
-    await window.executeRecaptcha?.("LOGOUT");
+    const token = await window.executeRecaptcha?.("LOGOUT");
+    auditRecaptcha(token, "LOGOUT"); // fire-and-forget
     await signOut();
   };
 
