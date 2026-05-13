@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -14,6 +15,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider('6Le1h-QsAAAAANhZq1OJYXGe3uP2RRpi8TUQbKlp'),
+  isTokenAutoRefreshEnabled: true,
+});
+
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
