@@ -2,6 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useAuth } from "../auth/AuthContext";
+import { auditRecaptcha } from "../api/recaptcha";
 
 const Wrapper = styled.div`
   display: flex;
@@ -103,7 +104,12 @@ const LoginScreen = ({ languageMode }) => {
     setBusy(true);
     setError(null);
     try {
-      await window.executeRecaptcha?.("LOGIN");
+      const token = await window.executeRecaptcha?.("LOGIN");
+      const audit = await auditRecaptcha(token, "LOGIN");
+      if (!audit.success || audit.score < 0.5) {
+        setError("Security check failed. Please try again.");
+        return;
+      }
       await signInWithGoogle();
     } catch (err) {
       if (err.code !== "auth/popup-closed-by-user") {
